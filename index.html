@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEBRIN Online Service</title>
+<meta name="theme-color" content="#0a0a0f">
+<link rel="manifest" href="./manifest.json">
+<link rel="icon" type="image/png" href="icon-512.png">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+
+<style>
+/* CSS ILE ILE ILIYOZOELEKA */
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#0a0a0f;--sur:#12121a;--card:#1a1a26;--bdr:#2a2a3d;--acc:#e8b84b;--txt:#f0eee8;--mut:#8a8a9a;--red:#c0392b;--r:14px}
+body{background:var(--bg);color:var(--txt);font-family:'DM Sans',sans-serif;min-height:100vh}
+.page{display:none}.page.active{display:block;animation:fadeIn .3s ease}
+.sub-page{display:none}.sub-page.active{display:block}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+
+.awrap{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;background:linear-gradient(160deg,#150900,#0a0a0f 55%,#00101a)}
+.aname{font-family:'Playfair Display',serif;font-size:36px;font-weight:900;background:linear-gradient(135deg,var(--acc),#fff 60%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:5px}
+.fcard{background:var(--card);border:1px solid var(--bdr);border-radius:18px;padding:24px;width:100%;max-width:400px}
+.fi{width:100%;background:var(--sur);border:1.5px solid var(--bdr);border-radius:10px;padding:12px;color:var(--txt);outline:none;margin-top:10px}
+.bmain{width:100%;background:linear-gradient(135deg,var(--acc),#c8991f);border:none;border-radius:10px;padding:13px;color:#0a0a0f;font-weight:700;cursor:pointer;margin-top:20px}
+.tb{background:var(--sur);border-bottom:1px solid var(--bdr);padding:15px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100}
+.mb{padding:20px;max-width:800px;margin:0 auto;padding-bottom:100px}
+.scrd{background:var(--card);border:1px solid var(--bdr);border-radius:var(--r);padding:18px;margin-bottom:15px}
+.breq{background:var(--acc);border:none;border-radius:7px;padding:8px 15px;color:#0a0a0f;font-weight:700;cursor:pointer;margin-top:10px}
+.breq:disabled{opacity:0.5;cursor:not-allowed}
+
+.bnav{position:fixed;bottom:0;left:0;right:0;background:var(--sur);border-top:1px solid var(--bdr);display:flex;justify-content:space-around;padding:12px;z-index:1000}
+.nb{background:none;border:none;color:var(--mut);font-size:12px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px}
+.nb.on{color:var(--acc)}
+</style>
+</head>
+<body>
+
+<div id="pg-auth" class="page active">
+    <div class="awrap">
+        <div class="aname">NEBRIN</div>
+        <div class="fcard">
+            <h2>Karibu</h2>
+            <input class="fi" id="eml" type="email" placeholder="Barua Pepe">
+            <input class="fi" id="pwd" type="password" placeholder="Nenosiri">
+            <button class="bmain" onclick="doSubmit()">Ingia</button>
+        </div>
+    </div>
+</div>
+
+<div id="pg-dash" class="page">
+    <div class="tb">
+        <div style="font-family:'Playfair Display',serif; color:var(--acc); font-weight:900">NEBRIN</div>
+        <button onclick="location.reload()" style="background:none; border:none; color:var(--red); font-size:12px">Toka</button>
+    </div>
+
+    <div id="sub-home" class="sub-page active">
+        <div class="mb">
+            <h3 style="margin-bottom:20px; font-family:'Playfair Display'">Huduma Zetu</h3>
+            <div id="svclst"></div>
+        </div>
+    </div>
+
+    <div id="sub-reqs" class="sub-page">
+        <div class="mb">
+            <h3 style="margin-bottom:20px; font-family:'Playfair Display'">Maombi Yangu</h3>
+            <div id="my-req-list"></div>
+        </div>
+    </div>
+
+    <div class="bnav">
+        <button class="nb on" id="btn-home" onclick="navTo('home')"><span>🏠 Nyumbani</span></button>
+        <button class="nb" id="btn-reqs" onclick="navTo('reqs')"><span>📋 Maombi Yangu</span></button>
+    </div>
+</div>
+
+<script>
+const SB_URL = "https://oguukuhflamwmgrbdqfk.supabase.co";
+const SB_KEY = "sb_publishable_DfUyGsd9bdFBJmouRZf5Rw_SQBnUYXE";
+const sb = supabase.createClient(SB_URL, SB_KEY);
+
+let userEmail = "";
+
+const SVCS = [
+    {id:1, name:"Uundaji wa Tovuti", desc:"Tovuti za kitaalamu kwa biashara yako."},
+    {id:2, name:"E-Commerce", desc:"Duka la kidijitali lenye mfumo wa malipo."},
+    {id:3, name:"Vyeti vya Kuzaliwa", desc:"Msaada wa kupata cheti (Siku 3)."},
+    {id:4, name:"Usajili wa NIDA", desc:"Ufuatiliaji wa namba ya NIDA mtandaoni."},
+    {id:16, name:"CCTV & Security", desc:"Ufungaji wa kamera za usalama."}
+];
+
+function navTo(page) {
+    document.querySelectorAll('.sub-page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nb').forEach(b => b.classList.remove('on'));
+    if(page === 'home') {
+        document.getElementById('sub-home').classList.add('active');
+        document.getElementById('btn-home').classList.add('on');
+    } else {
+        document.getElementById('sub-reqs').classList.add('active');
+        document.getElementById('btn-reqs').classList.add('on');
+        fetchMyRequests(); // Pakia maombi wakati mteja anafungua ukurasa huu
+    }
+}
+
+async function doSubmit() {
+    const email = document.getElementById("eml").value;
+    const password = document.getElementById("pwd").value;
+    try {
+        const { data, error } = await sb.auth.signInWithPassword({ email, password });
+        if(error) throw error;
+        userEmail = data.user.email;
+        document.getElementById("pg-auth").classList.remove("active");
+        document.getElementById("pg-dash").classList.add("active");
+        renderSvcs();
+    } catch(e) { alert(e.message); }
+}
+
+function renderSvcs() {
+    const container = document.getElementById("svclst");
+    container.innerHTML = SVCS.map(s => `
+        <div class="scrd">
+            <h4 style="color:var(--acc)">${s.name}</h4>
+            <p style="font-size:13px; color:var(--mut)">${s.desc}</p>
+            <button class="breq" id="btn-${s.id}" onclick="sendRequest('${s.name}', ${s.id})">Omba Sasa</button>
+        </div>
+    `).join('');
+}
+
+// HII NDIO FUNCTION INAYOTUMA MAOMBI KWENYE DATABASE
+async function sendRequest(huduma, id) {
+    const btn = document.getElementById(`btn-${id}`);
+    btn.disabled = true;
+    btn.innerText = "Inatuma...";
+
+    try {
+        const { error } = await sb
+            .from('maombi')
+            .insert([{ user_email: userEmail, huduma_name: huduma }]);
+
+        if (error) throw error;
+        alert("Ombi lako la " + huduma + " limefika NEBRIN!");
+    } catch (e) {
+        alert("Kuna tatizo: " + e.message);
+    } finally {
+        btn.disabled = false;
+        btn.innerText = "Omba Sasa";
+    }
+}
+
+// HII INACHUKUA MAOMBI YAKO ILI UYAONE KWENYE APP
+async function fetchMyRequests() {
+    const list = document.getElementById("my-req-list");
+    list.innerHTML = "Inatafuta maombi yako...";
+    
+    try {
+        const { data, error } = await sb
+            .from('maombi')
+            .select('*')
+            .eq('user_email', userEmail)
+            .order('tarehe', { ascending: false });
+
+        if (error) throw error;
+
+        if (data.length === 0) {
+            list.innerHTML = "<p style='text-align:center; color:var(--mut)'>Huna maombi yoyote.</p>";
+        } else {
+            list.innerHTML = data.map(r => `
+                <div class="scrd">
+                    <div style="display:flex; justify-content:space-between">
+                        <span style="color:var(--acc); font-weight:700">${r.huduma_name}</span>
+                        <span style="font-size:11px; background:var(--sur); padding:2px 8px; border-radius:10px">${r.status}</span>
+                    </div>
+                    <div style="font-size:10px; color:var(--mut); margin-top:8px">
+                        Tarehe: ${new Date(r.tarehe).toLocaleDateString('sw-TZ')}
+                    </div>
+                </div>
+            `).join('');
+        }
+    } catch (e) {
+        list.innerHTML = "Imeshindwa kupakia maombi.";
+    }
+}
+</script>
+</body>
+</html>
