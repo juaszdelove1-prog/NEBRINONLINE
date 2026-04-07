@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEBRIN - Huduma Zetu</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        :root { --gold: #d4a017; --dark: #0f111a; --card: #1a1d29; }
+        body { background: var(--dark); color: white; font-family: sans-serif; padding: 20px; margin: 0; }
+        .header { display: flex; justify-content: space-between; padding-bottom: 20px; color: var(--gold); }
+        h2 { font-size: 20px; margin-bottom: 20px; }
+        .card { background: var(--card); padding: 15px; border-radius: 12px; margin-bottom: 20px; border: 1px solid #2a2e3f; }
+        .card h3 { margin: 0 0 10px 0; font-size: 16px; }
+        textarea { 
+            width: 100%; background: #0b0d14; border: 1px solid #333; 
+            color: white; padding: 10px; border-radius: 8px; resize: none; box-sizing: border-box;
+        }
+        button { 
+            width: 100%; background: var(--gold); border: none; padding: 12px; 
+            border-radius: 8px; font-weight: bold; margin-top: 10px; cursor: pointer; 
+        }
+        button:disabled { background: #555; }
+        .nav { position: fixed; bottom: 0; left: 0; width: 100%; background: #0b0d14; display: flex; justify-content: space-around; padding: 15px 0; border-top: 1px solid #222; }
+        .nav-item { color: #888; text-decoration: none; font-size: 12px; }
+        .active { color: var(--gold); }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <strong>NEBRIN</strong>
+        <span style="font-size: 12px;">nebrinonline@gmail.com (client)</span>
+    </div>
+
+    <h2>Huduma Zetu</h2>
+
+    <div class="card">
+        <h3>Uundaji wa Tovuti</h3>
+        <textarea id="txt-tovuti" rows="3" placeholder="Andika maelezo hapa..."></textarea>
+        <button onclick="tumaOmbi('Uundaji wa Tovuti', 'txt-tovuti')">Tuma Ombi</button>
+    </div>
+
+    <div class="card">
+        <h3>NIDA Online</h3>
+        <textarea id="txt-nida" rows="3" placeholder="Andika maelezo hapa..."></textarea>
+        <button onclick="tumaOmbi('NIDA Online', 'txt-nida')">Tuma Ombi</button>
+    </div>
+
+    <div class="card">
+        <h3>Graphic Design</h3>
+        <textarea id="txt-graphic" rows="3" placeholder="Andika maelezo hapa..."></textarea>
+        <button onclick="tumaOmbi('Graphic Design', 'txt-graphic')">Tuma Ombi</button>
+    </div>
+
+    <div style="height: 60px;"></div>
+
+    <div class="nav">
+        <a href="#" class="nav-item">Nyumbani</a>
+        <a href="#" class="nav-item active">Maombi</a>
+        <a href="#" class="nav-item">Toka</a>
+    </div>
+
+    <script>
+        // 1. WEKA DATA ZAKO HAPA
+        const SB_URL = 'https://WEKA_URL_YAKO.supabase.co';
+        const SB_KEY = 'WEKA_ANON_KEY_YAKO';
+        const supabaseClient = supabase.createClient(SB_URL, SB_KEY);
+
+        async function tumaOmbi(aina, idInput) {
+            const maelezo = document.getElementById(idInput).value;
+            const btn = event.target;
+
+            if (!maelezo) { alert("Tafadhali andika maelezo!"); return; }
+
+            btn.disabled = true;
+            btn.innerText = "Inatuma...";
+
+            const { error } = await supabaseClient
+                .from('maombi')
+                .insert([
+                    { 
+                        user_email: 'nebrinonline@gmail.com', 
+                        huduma_name: aina, 
+                        maelezo: maelezo 
+                    }
+                ]);
+
+            if (error) {
+                alert("Imegoma: " + error.message);
+            } else {
+                alert("Ombi la " + aina + " limepokelewa!");
+                document.getElementById(idInput).value = "";
+            }
+            btn.disabled = false;
+            btn.innerText = "Tuma Ombi";
+        }
+    </script>
+</body>
+</html>
