@@ -1,0 +1,30 @@
+{
+  "name": "NEBRIN Online Service Company",
+  "short_name": "NEBRIN",
+  "description": "Huduma za Kidigitali Tanzania — Mbeya City",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0a0f",
+  "theme_color": "#e8b84b",
+  "orientation": "portrait",
+  "lang": "sw",
+  "categories": ["business", "productivity"],
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' rx='80' fill='%23e8b84b'/><text y='380' x='60' font-size='380'>🌐</text></svg>",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [],
+  "shortcuts": [
+    {
+      "name": "Huduma",
+      "short_name": "Huduma",
+      "description": "Angalia huduma zetu",
+      "url": "/?tab=services",
+      "icons": [{ "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>", "sizes": "96x96" }]
+    }
+  ]
+}
