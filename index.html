@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEBRIN Online Service</title>
+
+<meta name="theme-color" content="#0a0a0f">
+<link rel="manifest" href="./manifest.json">
+<link rel="icon" type="image/png" href="icon-512.png">
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+
+<style>
+/* 1. MSINGI WA RANGI NA MUONEKANO (UAMINIFU WA NEBRIN) */
+:root {
+    --bg: #0a0a0f;
+    --sur: #12121a;
+    --card: #1a1a26;
+    --bdr: #2a2a3d;
+    --acc: #e8b84b; /* Dhahabu */
+    --txt: #f0eee8;
+    --mut: #8a8a9a;
+    --red: #ff4444;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { 
+    background: var(--bg); 
+    color: var(--txt); 
+    font-family: 'DM Sans', sans-serif; 
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* Page Transitions */
+.page { display: none; }
+.page.active { display: block; animation: fadeIn 0.4s ease; }
+.sub-page { display: none; }
+.sub-page.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+/* 2. MUONEKANO WA AUTH (LOGIN/SIGNUP) */
+.awrap {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: radial-gradient(circle at top, #1a1000 0%, #0a0a0f 70%);
+}
+
+.logo-box {
+    width: 80px;
+    height: 80px;
+    background: var(--acc);
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    box-shadow: 0 0 30px rgba(232,184,75,0.3);
+}
+
+.aname {
+    font-family: 'Playfair Display', serif;
+    font-size: 36px;
+    font-weight: 900;
+    color: var(--acc);
+    letter-spacing: 2px;
+    text-align: center;
+}
+
+.atag {
+    color: var(--mut);
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 30px;
+}
+
+.rolesw {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 25px;
+    width: 100%;
+    max-width: 380px;
+}
+
+.rbtn {
+    flex: 1;
+    padding: 15px;
+    border-radius: 14px;
+    border: 1px solid var(--bdr);
+    background: var(--card);
+    color: var(--mut);
+    cursor: pointer;
+    text-align: center;
+    transition: 0.3s;
+}
+
+.rbtn.on {
+    border-color: var(--acc);
+    background: rgba(232,184,75,0.05);
+    color: var(--acc);
+    box-shadow: 0 0 15px rgba(232,184,75,0.1);
+}
+
+.fcard {
+    background: var(--card);
+    border: 1px solid var(--bdr);
+    border-radius: 22px;
+    padding: 30px;
+    width: 100%;
+    max-width: 380px;
+}
+
+.fi {
+    width: 100%;
+    background: var(--sur);
+    border: 1px solid var(--bdr);
+    border-radius: 12px;
+    padding: 14px;
+    color: var(--txt);
+    margin-top: 15px;
+    outline: none;
+    transition: 0.2s;
+}
+
+.fi:focus { border-color: var(--acc); }
+
+.bmain {
+    width: 100%;
+    background: linear-gradient(135deg, var(--acc), #c8991f);
+    border: none;
+    border-radius: 12px;
+    padding: 15px;
+    color: #000;
+    font-weight: 700;
+    margin-top: 25px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+/* 3. DASHBOARD & MENU */
+.tb {
+    padding: 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--bdr);
+    background: var(--sur);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.mb { padding: 20px; padding-bottom: 100px; max-width: 800px; margin: 0 auto; }
+
+.scrd {
+    background: var(--card);
+    border: 1px solid var(--bdr);
+    border-radius: 18px;
+    padding: 20px;
+    margin-bottom: 15px;
+}
+
+.status-pill {
+    font-size: 10px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    background: rgba(232,184,75,0.1);
+    color: var(--acc);
+    font-weight: 600;
+}
+
+.bnav {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background: var(--sur);
+    border-top: 1px solid var(--bdr);
+    display: flex;
+    justify-content: space-around;
+    padding: 12px;
+    z-index: 1000;
+}
+
+.nb {
+    background: none;
+    border: none;
+    color: var(--mut);
+    font-size: 12px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+}
+
+.nb.on { color: var(--acc); }
+</style>
+</head>
+<body>
+
+<div id="pg-auth" class="page active">
+    <div class="awrap">
+        <div class="logo-box"><span style="font-size:40px">🌐</span></div>
+        <div class="aname">NEBRIN</div>
+        <div class="atag">Online Service Company</div>
+        
+        <div class="rolesw">
+            <div class="rbtn on" id="rb-client" onclick="selRole('client')">Mteja</div>
+            <div class="rbtn" id="rb-staff" onclick="selRole('staff')">Mtoa Huduma</div>
+        </div>
+
+        <div class="fcard">
+            <h2 id="ftitle" style="font-family:'Playfair Display'">Karibu tena</h2>
+            <p id="fsub" style="color:var(--mut); font-size:13px; margin-bottom:10px">Ingia kuendelea na huduma</p>
+            <input class="fi" id="eml" type="email" placeholder="Barua Pepe">
+            <input class="fi" id="pwd" type="password" placeholder="Nenosiri">
+            <button class="bmain" id="btn-submit" onclick="doSubmit()">Ingia</button>
+            <p style="text-align:center; margin-top:15px; font-size:13px">
+                Huna akaunti? <a href="#" onclick="toggleAuth()" style="color:var(--acc); text-decoration:none">Jiandikishe</a>
+            </p>
+        </div>
+    </div>
+</div>
+
+<div id="pg-dash" class="page">
+    <div class="tb">
+        <div style="font-family:'Playfair Display'; color:var(--acc); font-weight:900; font-size:20px">NEBRIN</div>
+        <button onclick="location.reload()" style="background:none; border:none; color:var(--red); font-weight:600">Toka</button>
+    </div>
+
+    <div id="sub-home" class="sub-page active">
+        <div class="mb">
+            <h3 style="margin-bottom:20px; font-family:'Playfair Display'; font-size:24px">Huduma Zetu (16)</h3>
+            <div id="svclst"></div>
+        </div>
+    </div>
+
+    <div id="sub-reqs" class="sub-page">
+        <div class="mb">
+            <h3 style="margin-bottom:20px; font-family:'Playfair Display'; font-size:24px">Maombi Yangu</h3>
+            <div id="my-req-list"></div>
+        </div>
+    </div>
+
+    <div class="bnav">
+        <button class="nb on" id="btn-home" onclick="navTo('home')">
+            <span style="font-size:20px">🏠</span>
+            <span>Nyumbani</span>
+        </button>
+        <button class="nb" id="btn-reqs" onclick="navTo('reqs')">
+            <span style="font-size:20px">📋</span>
+            <span>Maombi Yangu</span>
+        </button>
+    </div>
+</div>
+
+<script>
+// SUPABASE CONFIG
+const SB_URL = "https://oguukuhflamwmgrbdqfk.supabase.co";
+const SB_KEY = "sb_publishable_DfUyGsd9bdFBJmouRZf5Rw_SQBnUYXE";
+const sb = supabase.createClient(SB_URL, SB_KEY);
+
+let userEmail = "";
+let authMode = "login";
+
+// FULL SERVICES LIST (16)
+const SVCS = [
+    {id:1, name:"Uundaji wa Tovuti", desc:"Tovuti za kitaalamu zinazovutia wateja kwa biashara yako."},
+    {id:2, name:"E-Commerce", desc:"Duka la kidijitali lenye mfumo wa malipo na usimamizi wa bidhaa."},
+    {id:3, name:"Vyeti vya Kuzaliwa", desc:"Msaada wa kupata cheti cha kuzaliwa haraka (Siku 3)."},
+    {id:4, name:"NIDA Online", desc:"Usajili na ufuatiliaji wa namba ya NIDA mtandaoni bila usumbufu."},
+    {id:5, name:"Laini za Uwakala", desc:"Usajili wa laini za uwakala kwa mitandao yote ya simu (Tigo, Vodacom, Airtel)."},
+    {id:6, name:"Mabango ya Kidijitali", desc:"Usanifu na utengenezaji wa mabango ya kisasa kwa ajili ya matangazo."},
+    {id:7, name:"Kadi za Mwaliko", desc:"Kadi za harusi, send-off, na sherehe mbalimbali kwa muundo wa kuvutia."},
+    {id:8, name:"Passport & Visa", desc:"Ushauri na msaada wa maombi ya hati za kusafiria na viza mtandaoni."},
+    {id:9, name:"TIN Number", desc:"Msaada wa kusajili na kupata namba ya mlipa kodi (TIN) kutoka TRA."},
+    {id:10, name:"Business License", desc:"Ufuatiliaji wa leseni za biashara kwa wafanyabiashara wadogo na wakubwa."},
+    {id:11, name:"Graphic Design", desc:"Huduma za logo, vipeperushi (flyers), na vitambulisho vya kazi."},
+    {id:12, name:"Social Media Ads", desc:"Usimamizi wa matangazo ya Facebook, Instagram, na Google kwa biashara."},
+    {id:13, name:"Software Installation", desc:"Ufungaji wa programu mbalimbali za kompyuta na mifumo ya uendeshaji."},
+    {id:14, name:"Computer Maintenance", desc:"Matengenezo ya kompyuta na kutoa virusi (Antivirus installation)."},
+    {id:15, name:"Video Editing", desc:"Uhariri wa video za matangazo na sherehe katika ubora wa juu (HD)."},
+    {id:16, name:"CCTV & Security", desc:"Ufungaji wa kamera za usalama na mifumo ya kengele majumbani na ofisini."}
+];
+
+function selRole(r) {
+    document.getElementById('rb-client').classList.toggle('on', r==='client');
+    document.getElementById('rb-staff').classList.toggle('on', r==='staff');
+}
+
+function toggleAuth() {
+    authMode = (authMode === "login") ? "signup" : "login";
+    document.getElementById("ftitle").innerText = (authMode === "login") ? "Karibu tena" : "Unda Akaunti";
+    document.getElementById("btn-submit").innerText = (authMode === "login") ? "Ingia" : "Jisajili";
+}
+
+function navTo(p) {
+    document.querySelectorAll('.sub-page').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.nb').forEach(el => el.classList.remove('on'));
+    if(p === 'home') {
+        document.getElementById('sub-home').classList.add('active');
+        document.getElementById('btn-home').classList.add('on');
+    } else {
+        document.getElementById('sub-reqs').classList.add('active');
+        document.getElementById('btn-reqs').classList.add('on');
+        fetchMyRequests();
+    }
+}
+
+async function doSubmit() {
+    const email = document.getElementById("eml").value;
+    const password = document.getElementById("pwd").value;
+    const btn = document.getElementById("btn-submit");
+    
+    if(!email || !password) return alert("Tafadhali jaza taarifa zote.");
+    
+    btn.disabled = true;
+    btn.innerText = "Inapakia...";
+
+    try {
+        let res;
+        if(authMode === "login") {
+            res = await sb.auth.signInWithPassword({ email, password });
+        } else {
+            res = await sb.auth.signUp({ email, password });
+        }
+
+        if(res.error) throw res.error;
+
+        if(authMode === "signup") {
+            alert("Akaunti imeundwa! Angalia email yako kuthibitisha.");
+            location.reload();
+        } else {
+            userEmail = res.data.user.email;
+            document.getElementById("pg-auth").classList.remove("active");
+            document.getElementById("pg-dash").classList.add("active");
+            renderSvcs();
+        }
+    } catch(e) {
+        alert(e.message);
+    } finally {
+        btn.disabled = false;
+        btn.innerText = (authMode === "login") ? "Ingia" : "Jisajili";
+    }
+}
+
+function renderSvcs() {
+    const container = document.getElementById("svclst");
+    container.innerHTML = SVCS.map(s => `
+        <div class="scrd">
+            <h4 style="color:var(--acc); font-family:'Playfair Display'; font-size:18px">${s.name}</h4>
+            <p style="font-size:13px; color:var(--mut); margin:10px 0">${s.desc}</p>
+            <button class="bmain" style="margin-top:5px; padding:10px" onclick="sendRequest('${s.name}')">Omba Huduma</button>
+        </div>
+    `).join('');
+}
+
+async function sendRequest(huduma) {
+    try {
+        const { error } = await sb.from('maombi').insert([{ user_email: userEmail, huduma_name: huduma }]);
+        if (error) throw error;
+        alert("Ombi la " + huduma + " limefika NEBRIN!");
+    } catch (e) {
+        alert("Hitilafu: " + e.message);
+    }
+}
+
+async function fetchMyRequests() {
+    const list = document.getElementById("my-req-list");
+    list.innerHTML = "<p style='text-align:center'>Inatafuta maombi yako...</p>";
+    
+    try {
+        const { data, error } = await sb.from('maombi').select('*').eq('user_email', userEmail).order('tarehe', { ascending: false });
+        if (error) throw error;
+
+        if (data.length === 0) {
+            list.innerHTML = "<p style='text-align:center; color:var(--mut); margin-top:40px'>Huna maombi yoyote bado.</p>";
+        } else {
+            list.innerHTML = data.map(r => `
+                <div class="scrd">
+                    <div style="display:flex; justify-content:space-between; align-items:center">
+                        <span style="color:var(--acc); font-weight:700">${r.huduma_name}</span>
+                        <span class="status-pill">${r.status}</span>
+                    </div>
+                    <p style="font-size:11px; color:var(--mut); margin-top:10px">
+                        Tarehe: ${new Date(r.tarehe).toLocaleDateString('sw-TZ')}
+                    </p>
+                </div>
+            `).join('');
+        }
+    } catch (e) {
+        list.innerHTML = "<p style='color:var(--red)'>Imeshindwa kupakia maombi.</p>";
+    }
+}
+</script>
+</body>
+</html>
