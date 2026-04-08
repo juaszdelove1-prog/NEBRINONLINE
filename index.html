@@ -13,6 +13,11 @@
 <link rel="manifest" href="manifest.json">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<!-- Vercel Web Analytics -->
+<script>
+  window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+</script>
+<script defer src="https://cdn.vercel-insights.com/v1/script.js"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{--bg:#0a0a0f;--sur:#12121a;--card:#1a1a26;--bdr:#2a2a3d;--acc:#e8b84b;--txt:#f0eee8;--mut:#8a8a9a;--grn:#27ae60;--red:#c0392b;--r:14px}
@@ -660,7 +665,7 @@ function doSubmit(){
   }
 }
 
-// ── OTP ──
+// ─�� OTP ──
 function generateOTP(){return Math.floor(100000+Math.random()*900000).toString();}
 
 function showOTPStep(email,user){
