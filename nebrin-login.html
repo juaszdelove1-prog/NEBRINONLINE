@@ -1,0 +1,1380 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEBRIN — Huduma za Kidigitali Tanzania | Mbeya</title>
+<meta name="theme-color" content="#0a0a0f">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="NEBRIN">
+
+<!-- SEO Meta Tags -->
+<meta name="description" content="NEBRIN Online Service Company — Huduma za Kidigitali Tanzania. Uundaji wa Tovuti, Graphics Design, CCTV, NIDA Online, Vyeti, Lipa Namba, E-Commerce. Mbeya City, Tanzania.">
+<meta name="keywords" content="NEBRIN, huduma za kidigitali Tanzania, uundaji wa tovuti Mbeya, graphics design Tanzania, CCTV Mbeya, NIDA online Tanzania, vyeti vya kuzaliwa, lipa namba Tanzania, app Tanzania, online services Mbeya">
+<meta name="author" content="NEBRIN Online Service Company">
+<meta name="robots" content="index, follow">
+<meta name="language" content="Swahili">
+<meta name="geo.region" content="TZ-MB">
+<meta name="geo.placename" content="Mbeya, Tanzania">
+<link rel="canonical" href="https://nebrinonlineonesignal.com">
+
+<!-- Open Graph (Facebook, WhatsApp) -->
+<meta property="og:title" content="NEBRIN — Huduma za Kidigitali Tanzania">
+<meta property="og:description" content="Uundaji wa Tovuti, Graphics Design, CCTV, NIDA Online, Vyeti, Lipa Namba na zaidi. Mbeya City, Tanzania.">
+<meta property="og:url" content="https://nebrinonlineonesignal.com">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="sw_TZ">
+<meta property="og:site_name" content="NEBRIN Online Service Company">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="NEBRIN — Huduma za Kidigitali Tanzania">
+<meta name="twitter:description" content="Uundaji wa Tovuti, CCTV, NIDA, Graphics Design na zaidi — Mbeya City Tanzania">
+
+<!-- PWA -->
+<link rel="manifest" href="manifest.json">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#0a0a0f;--sur:#12121a;--card:#1a1a26;--bdr:#2a2a3d;--acc:#e8b84b;--txt:#f0eee8;--mut:#8a8a9a;--grn:#27ae60;--red:#c0392b;--r:14px}
+body{background:var(--bg);color:var(--txt);font-family:'DM Sans',sans-serif;min-height:100vh}
+
+/* NIGHT MODE */
+body.night-mode{
+  --bg:#000005;
+  --sur:#080810;
+  --card:#0f0f18;
+  --bdr:#1a1a2a;
+  --txt:#c8c6c0;
+  --mut:#666070;
+  --acc:#c89830;
+  filter: brightness(0.75);
+}
+body.night-mode .splash{background:#000005}
+
+/* NIGHT MODE TOGGLE */
+.night-toggle{
+  position:fixed;bottom:75px;right:12px;
+  width:42px;height:42px;border-radius:50%;
+  background:var(--card);border:1px solid var(--bdr);
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;cursor:pointer;z-index:300;
+  box-shadow:0 4px 12px rgba(0,0,0,.4);
+  transition:all .3s;
+}
+.night-toggle:hover{transform:scale(1.1)}
+
+/* AUTO-LOGOUT WARNING */
+.logout-warning{
+  position:fixed;top:0;left:0;right:0;
+  background:linear-gradient(135deg,#1a0a00,#2a0a00);
+  border-bottom:2px solid var(--red);
+  padding:12px 16px;z-index:500;
+  display:none;animation:slideDown .3s ease;
+  align-items:center;gap:12px;
+}
+.logout-warning.show{display:flex}
+.lw-icon{font-size:22px;flex-shrink:0}
+.lw-txt{flex:1}
+.lw-title{font-weight:700;font-size:13px;color:#e74c3c;margin-bottom:2px}
+.lw-sub{font-size:12px;color:var(--mut)}
+.lw-timer{font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:#e74c3c;flex-shrink:0}
+.btn-stay{background:linear-gradient(135deg,var(--acc),#c8991f);border:none;border-radius:7px;padding:7px 14px;color:#0a0a0f;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:700;cursor:pointer;flex-shrink:0}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes pulse{0%,100%{transform:translate(-50%,-50%) scale(1)}50%{transform:translate(-50%,-50%) scale(1.08)}}
+@keyframes ticker{0%{transform:translateX(100%)}100%{transform:translateX(-100%)}}
+@keyframes slideDown{from{opacity:0;transform:translateY(-20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes glow{0%,100%{box-shadow:0 0 20px rgba(232,184,75,.3)}50%{box-shadow:0 0 40px rgba(232,184,75,.6)}}
+.page{display:none}.page.active{display:block;animation:fadeIn .3s ease}
+.sub{display:none}.sub.active{display:block;animation:fadeIn .25s ease}
+
+/* SPLASH SCREEN */
+.splash{position:fixed;inset:0;background:linear-gradient(160deg,#150900,#0a0a0f 50%,#00101a);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px}
+.splash-icon{width:100px;height:100px;background:linear-gradient(135deg,var(--acc),#f0c96e);border-radius:24px;display:flex;align-items:center;justify-content:center;font-size:48px;animation:glow 2s ease-in-out infinite}
+.splash-name{font-family:'Playfair Display',serif;font-size:48px;font-weight:900;background:linear-gradient(135deg,var(--acc),#fff 60%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:fadeUp .6s ease .3s both}
+.splash-tag{color:var(--mut);font-size:12px;letter-spacing:4px;text-transform:uppercase;animation:fadeUp .6s ease .5s both}
+.splash-ticker-wrap{position:absolute;bottom:60px;left:0;right:0;height:44px;overflow:hidden;background:rgba(232,184,75,.05);border-top:1px solid rgba(232,184,75,.1);border-bottom:1px solid rgba(232,184,75,.1);display:flex;align-items:center;justify-content:center}
+.splash-ticker{font-size:13px;color:var(--acc);font-weight:500;text-align:center;animation:splashTick 2.5s ease-in-out infinite}
+@keyframes splashTick{0%,100%{transform:translateY(8px);opacity:0}15%,85%{transform:translateY(0);opacity:1}}
+.splash-bar{width:200px;height:3px;background:rgba(255,255,255,.1);border-radius:100px;overflow:hidden;animation:fadeUp .6s ease .7s both}
+.splash-progress{height:100%;background:linear-gradient(90deg,var(--acc),#f0c96e);border-radius:100px;animation:progress 2.5s ease forwards}
+@keyframes progress{from{width:0}to{width:100%}}
+
+/* TICKER BAR (in app) - vertical scroll */
+.ticker-bar{background:rgba(232,184,75,.07);border-bottom:1px solid rgba(232,184,75,.12);height:32px;overflow:hidden;position:relative}
+.ticker-inner{position:absolute;width:100%;animation:tickerV 18s linear infinite;font-size:12px;color:var(--acc);font-weight:500;text-align:center}
+@keyframes tickerV{
+  0%{transform:translateY(32px);opacity:0}
+  5%{opacity:1}
+  20%{transform:translateY(0);opacity:1}
+  30%{transform:translateY(0);opacity:1}
+  45%{transform:translateY(-32px);opacity:0}
+  46%{transform:translateY(32px);opacity:0}
+  50%{transform:translateY(32px);opacity:0}
+  55%{opacity:1}
+  65%{transform:translateY(0);opacity:1}
+  75%{transform:translateY(0);opacity:1}
+  88%{transform:translateY(-32px);opacity:0}
+  89%{transform:translateY(32px);opacity:0}
+  100%{transform:translateY(32px);opacity:0}
+}
+
+/* UPDATE BANNER */
+.update-banner{background:linear-gradient(135deg,#0a1a2a,#1a0a2a);border-bottom:2px solid var(--acc);padding:14px 16px;display:none;animation:slideDown .4s ease}
+.update-banner.show{display:flex;align-items:center;gap:12px}
+.update-icon{font-size:24px;flex-shrink:0}
+.update-txt{flex:1}
+.update-title{font-weight:700;font-size:14px;margin-bottom:2px}
+.update-sub{font-size:12px;color:var(--mut)}
+.btn-update{background:linear-gradient(135deg,var(--acc),#c8991f);border:none;border-radius:8px;padding:8px 16px;color:#0a0a0f;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap}
+
+/* AUTH */
+.awrap{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;background:linear-gradient(160deg,#150900,#0a0a0f 55%,#00101a);position:relative;overflow:hidden}
+.awrap::before{content:'';position:absolute;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(232,184,75,.1),transparent 65%);top:50%;left:50%;transform:translate(-50%,-50%);animation:pulse 5s ease-in-out infinite;pointer-events:none}
+.alogo{text-align:center;margin-bottom:28px;position:relative;z-index:1}
+.aicon{width:72px;height:72px;background:linear-gradient(135deg,var(--acc),#f0c96e);border-radius:18px;display:flex;align-items:center;justify-content:center;font-size:34px;margin:0 auto 14px;box-shadow:0 16px 40px rgba(232,184,75,.3);animation:float 3s ease-in-out infinite}
+.aname{font-family:'Playfair Display',serif;font-size:36px;font-weight:900;background:linear-gradient(135deg,var(--acc),#fff 60%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.atag{color:var(--mut);font-size:11px;letter-spacing:3px;text-transform:uppercase;margin-top:5px}
+.rolesw{display:flex;gap:10px;margin-bottom:24px;width:100%;max-width:400px;position:relative;z-index:1}
+.rbtn{flex:1;padding:12px 8px;border-radius:10px;border:2px solid var(--bdr);background:var(--card);color:var(--mut);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;text-align:center}
+.rbtn .ri{font-size:20px;display:block;margin-bottom:3px}
+.rbtn.on{border-color:var(--acc);color:var(--acc);background:rgba(232,184,75,.07)}
+.fcard{background:var(--card);border:1px solid var(--bdr);border-radius:18px;padding:24px 20px;width:100%;max-width:400px;position:relative;z-index:1;animation:fadeUp .4s ease}
+.ftitle{font-family:'Playfair Display',serif;font-size:24px;font-weight:700;margin-bottom:4px}
+.fsub{color:var(--mut);font-size:13px;margin-bottom:22px}
+.fg{margin-bottom:14px}
+.fl{display:block;font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--mut);margin-bottom:5px}
+.fi{width:100%;background:var(--sur);border:1.5px solid var(--bdr);border-radius:10px;padding:12px 14px;color:var(--txt);font-family:'DM Sans',sans-serif;font-size:14px;outline:none;transition:all .2s}
+.fi:focus{border-color:var(--acc);box-shadow:0 0 0 3px rgba(232,184,75,.1)}
+.fi::placeholder{color:var(--mut)}
+.pwrap{position:relative}.pwrap .fi{padding-right:44px}
+.ebtn{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--mut);font-size:16px;padding:4px;line-height:1}
+.ebtn:hover{color:var(--acc)}
+.bmain{width:100%;background:linear-gradient(135deg,var(--acc),#c8991f);border:none;border-radius:10px;padding:13px;color:#0a0a0f;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:all .2s;margin-top:5px}
+.bmain:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(232,184,75,.28)}
+.bmain:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.sw{text-align:center;margin-top:14px;font-size:13px;color:var(--mut)}
+.sw a{color:var(--acc);cursor:pointer;font-weight:600;text-decoration:underline;text-underline-offset:3px}
+.al{padding:10px 13px;border-radius:8px;font-size:13px;margin-bottom:13px;border:1px solid;display:none}
+.al.on{display:block}.al.err{background:rgba(192,57,43,.1);border-color:rgba(192,57,43,.3);color:#e74c3c}
+.al.ok{background:rgba(39,174,96,.1);border-color:rgba(39,174,96,.3);color:#2ecc71}
+.al.info{background:rgba(52,152,219,.1);border-color:rgba(52,152,219,.3);color:#3498db}
+.div{display:flex;align-items:center;gap:10px;margin:14px 0}
+.dl{flex:1;height:1px;background:var(--bdr)}.dt{font-size:10px;color:var(--mut);letter-spacing:1px;text-transform:uppercase}
+.sp{width:15px;height:15px;border:2px solid rgba(0,0,0,.2);border-top-color:#0a0a0f;border-radius:50%;animation:spin .6s linear infinite;display:inline-block;vertical-align:middle;margin-right:6px}
+.sp2{width:13px;height:13px;border:2px solid rgba(255,255,255,.2);border-top-color:var(--acc);border-radius:50%;animation:spin .6s linear infinite;display:inline-block;vertical-align:middle;margin-right:5px}
+
+
+
+/* PROFILE SETUP */
+.profile-steps{display:flex;gap:6px;margin-bottom:20px;justify-content:center}
+.pstep{width:28px;height:4px;border-radius:100px;background:var(--bdr);transition:all .3s}
+.pstep.done{background:var(--acc)}
+.pstep.active{background:var(--acc);opacity:.6}
+.phone-flag{display:flex;align-items:center;gap:8px}
+.phone-prefix{background:var(--sur);border:1.5px solid var(--bdr);border-radius:10px 0 0 10px;padding:12px 10px;color:var(--txt);font-size:14px;font-weight:600;white-space:nowrap;border-right:none}
+.phone-fi{border-radius:0 10px 10px 0 !important}
+
+/* TOPBAR */
+.tb{background:var(--sur);border-bottom:1px solid var(--bdr);padding:0 14px;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.tbl{display:flex;align-items:center;gap:8px}
+.tbi{width:30px;height:30px;background:linear-gradient(135deg,var(--acc),#f0c96e);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:15px}
+.tbn{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;background:linear-gradient(135deg,var(--acc),#fff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.tbr{display:flex;align-items:center;gap:8px}
+.ubadge{display:flex;align-items:center;gap:7px;background:var(--card);border:1px solid var(--bdr);border-radius:100px;padding:4px 11px 4px 5px}
+.uav{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;flex-shrink:0}
+.uav-c{background:linear-gradient(135deg,var(--acc),var(--red))}.uav-s{background:linear-gradient(135deg,#2980b9,#8e44ad)}
+.uem{font-size:10px;color:var(--mut);max-width:100px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rtag{font-size:9px;padding:2px 7px;border-radius:100px;font-weight:600}
+.rtag-s{background:rgba(41,128,185,.15);color:#3498db;border:1px solid rgba(41,128,185,.25)}
+.rtag-c{background:rgba(232,184,75,.12);color:var(--acc);border:1px solid rgba(232,184,75,.2)}
+.bout{background:rgba(192,57,43,.1);border:1px solid rgba(192,57,43,.2);color:#e74c3c;padding:6px 11px;border-radius:7px;font-size:11px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif}
+.bout:hover{background:rgba(192,57,43,.2)}
+.bnav{position:fixed;bottom:0;left:0;right:0;background:var(--sur);border-top:1px solid var(--bdr);z-index:200;padding:5px 0 8px;display:flex;justify-content:space-around}
+.nb{display:flex;flex-direction:column;align-items:center;gap:2px;background:none;border:none;color:var(--mut);font-family:'DM Sans',sans-serif;font-size:10px;font-weight:500;padding:5px 8px;cursor:pointer;transition:all .2s;flex:1}
+.ni{font-size:20px}.nb.on{color:var(--acc)}
+.mb{padding:18px 14px 80px;max-width:860px;margin:0 auto}
+.wbanner{background:linear-gradient(135deg,#1a1200,var(--card) 60%,#001018);border:1px solid var(--bdr);border-radius:var(--r);padding:22px;margin-bottom:18px;position:relative;overflow:hidden}
+.wbanner::before{content:'✦';position:absolute;right:18px;top:50%;transform:translateY(-50%);font-size:70px;opacity:.05;color:var(--acc)}
+.wlbl{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--acc);font-weight:600;margin-bottom:6px}
+.wtitle{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;margin-bottom:5px}
+.wsub{color:var(--mut);font-size:13px}
+.sgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:18px}
+.sbox{background:var(--card);border:1px solid var(--bdr);border-radius:var(--r);padding:16px;transition:all .25s}
+.sbox:hover{border-color:var(--acc);transform:translateY(-2px)}
+.sico{font-size:22px;margin-bottom:10px}.sval{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--acc);margin-bottom:2px}
+.slbl{color:var(--mut);font-size:11px}
+.sectit{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:10px}
+.sectit::after{content:'';flex:1;height:1px;background:var(--bdr)}
+.sclist{display:flex;flex-direction:column;gap:12px}
+.scrd{background:var(--card);border:1px solid var(--bdr);border-radius:var(--r);padding:18px;transition:all .25s}
+.scrd:hover{border-color:rgba(232,184,75,.3);transform:translateY(-2px);box-shadow:0 10px 28px rgba(0,0,0,.3)}
+.shead{display:flex;align-items:center;gap:12px;margin-bottom:8px}
+.siw{width:44px;height:44px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;background:rgba(232,184,75,.07);border:1px solid rgba(232,184,75,.12)}
+.sname{font-family:'Playfair Display',serif;font-size:16px;font-weight:700}
+.sdesc{color:var(--mut);font-size:13px;line-height:1.6;margin-bottom:10px}
+.sfts{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px}
+.sft{background:rgba(255,255,255,.04);border:1px solid var(--bdr);border-radius:100px;padding:2px 9px;font-size:11px;color:var(--mut)}
+.breq{background:linear-gradient(135deg,var(--acc),#c8991f);border:none;border-radius:8px;padding:9px 18px;color:#0a0a0f;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:700;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:5px}
+.breq:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(232,184,75,.28)}
+.breq.sent{background:linear-gradient(135deg,var(--grn),#1a7a38);color:#fff;cursor:default}
+/* CHAT */
+.chat-card{background:var(--card);border:1px solid var(--bdr);border-radius:var(--r);margin-bottom:14px;overflow:hidden}
+.chat-header{padding:14px 16px;display:flex;align-items:center;gap:10px;cursor:pointer;border-bottom:1px solid transparent}
+.chat-header.open{border-bottom-color:var(--bdr)}
+.chat-svc-icon{font-size:20px}.chat-svc-name{font-weight:700;font-size:13px;flex:1}
+.chat-time{font-size:10px;color:var(--mut)}.chat-client{font-size:11px;color:var(--acc);font-weight:600}
+.chat-badge{display:inline-flex;align-items:center;padding:2px 8px;border-radius:100px;font-size:10px;font-weight:600;margin-left:auto}
+.cb-new{background:rgba(232,184,75,.15);color:var(--acc);border:1px solid rgba(232,184,75,.25)}
+.cb-open{background:rgba(39,174,96,.1);color:#2ecc71;border:1px solid rgba(39,174,96,.2)}
+.chat-msgs{padding:12px;display:flex;flex-direction:column;gap:8px;max-height:300px;overflow-y:auto;background:rgba(0,0,0,.15)}
+.msg-bubble{max-width:82%;padding:10px 13px;border-radius:12px;font-size:13px;line-height:1.6;word-break:break-word}
+.msg-auto{align-self:flex-start;background:rgba(232,184,75,.08);border:1px solid rgba(232,184,75,.15);border-bottom-left-radius:3px}
+.msg-staff{align-self:flex-start;background:rgba(41,128,185,.12);border:1px solid rgba(41,128,185,.2);border-bottom-left-radius:3px}
+.msg-client{align-self:flex-end;background:linear-gradient(135deg,rgba(232,184,75,.2),rgba(200,153,31,.15));border:1px solid rgba(232,184,75,.25);border-bottom-right-radius:3px}
+.msg-sender{font-size:10px;font-weight:600;margin-bottom:3px;opacity:.7}
+.msg-time{font-size:10px;opacity:.5;margin-top:3px;text-align:right}
+.chat-input-wrap{padding:10px 12px;border-top:1px solid var(--bdr);display:flex;gap:8px;align-items:flex-end}
+.chat-input{flex:1;background:var(--sur);border:1.5px solid var(--bdr);border-radius:10px;padding:9px 12px;color:var(--txt);font-family:'DM Sans',sans-serif;font-size:13px;outline:none;resize:none;min-height:40px;max-height:100px;transition:all .2s}
+.chat-input:focus{border-color:var(--acc)}.chat-input::placeholder{color:var(--mut)}
+.chat-send-btn{background:linear-gradient(135deg,var(--acc),#c8991f);border:none;border-radius:9px;padding:9px 14px;color:#0a0a0f;font-size:16px;cursor:pointer;transition:all .2s;flex-shrink:0;height:40px;display:flex;align-items:center;justify-content:center}
+.chat-send-btn:hover{transform:translateY(-1px)}.chat-send-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+/* CLIENT INFO CARD */
+.info-card{background:var(--card);border:1px solid var(--bdr);border-radius:var(--r);padding:16px;margin-bottom:14px}
+.info-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.info-icon{font-size:16px;flex-shrink:0;width:20px}
+.info-label{font-size:11px;color:var(--mut);width:70px;flex-shrink:0}
+.info-value{font-size:13px;font-weight:600;flex:1}
+/* ADMIN */
+.adcard{background:var(--card);border:1px solid var(--bdr);border-radius:var(--r);padding:18px;margin-bottom:14px}
+.adtitle{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;margin-bottom:3px}
+.adsub{color:var(--mut);font-size:12px;margin-bottom:14px}
+.stcard{background:var(--card);border:1px solid var(--bdr);border-radius:11px;padding:14px;display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px}
+.stleft{display:flex;align-items:center;gap:10px}
+.stav{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#2980b9,#8e44ad);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;flex-shrink:0}
+.stname{font-weight:700;font-size:13px;margin-bottom:2px}.stemail{font-size:11px;color:var(--mut);margin-bottom:3px}
+.strole{font-size:11px;color:var(--acc);background:rgba(232,184,75,.08);border:1px solid rgba(232,184,75,.18);border-radius:100px;padding:1px 9px;display:inline-block}
+.brem{background:rgba(192,57,43,.1);border:1px solid rgba(192,57,43,.18);color:#e74c3c;padding:6px 10px;border-radius:7px;font-size:11px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap}
+.brem:hover{background:rgba(192,57,43,.2)}
+.mov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.82);z-index:9000;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(5px)}
+.mov.on{display:flex;animation:fadeIn .2s ease}
+.mbox{background:#1a1a26;border:1px solid #3a3a5a;border-radius:16px;padding:22px 20px;width:100%;max-width:440px;animation:fadeUp .25s ease;max-height:90vh;overflow-y:auto}
+.mtitle{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;margin-bottom:3px}
+.msub{color:var(--mut);font-size:12px;margin-bottom:16px}
+.msvc{display:flex;align-items:center;gap:10px;background:rgba(232,184,75,.05);border:1px solid rgba(232,184,75,.15);border-radius:9px;padding:11px 13px;margin-bottom:15px}
+.msvcn{font-weight:700;font-size:13px}
+.mta{width:100%;background:var(--sur);border:1.5px solid var(--bdr);border-radius:9px;padding:11px;color:var(--txt);font-family:'DM Sans',sans-serif;font-size:13px;outline:none;resize:vertical;min-height:80px;transition:all .2s}
+.mta:focus{border-color:var(--acc)}.mta::placeholder{color:var(--mut)}
+.mbtns{display:flex;gap:9px;margin-top:14px}
+.bcancel{flex:1;background:rgba(255,255,255,.05);border:1px solid var(--bdr);border-radius:8px;padding:10px;color:var(--mut);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer}
+.bcancel:hover{background:rgba(255,255,255,.09);color:var(--txt)}
+.bsend{flex:2;background:linear-gradient(135deg,var(--acc),#c8991f);border:none;border-radius:8px;padding:10px;color:#0a0a0f;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;cursor:pointer}
+.bsend:disabled{opacity:.5;cursor:not-allowed}
+.pwab{position:fixed;bottom:70px;left:10px;right:10px;background:linear-gradient(135deg,#1a1200,var(--card));border:1px solid rgba(232,184,75,.4);border-radius:14px;padding:14px;z-index:400;display:none;box-shadow:0 6px 24px rgba(0,0,0,.4)}
+.pwab.on{display:flex;align-items:center;gap:10px;animation:fadeUp .3s ease}
+.pwai{font-size:28px;flex-shrink:0}.pwat{flex:1}
+.pwatt{font-weight:700;font-size:13px;margin-bottom:1px}.pwas{font-size:11px;color:var(--mut)}
+.pwabtns{display:flex;flex-direction:column;gap:5px;flex-shrink:0}
+.binstall{background:linear-gradient(135deg,var(--acc),#c8991f);border:none;border-radius:7px;padding:7px 12px;color:#0a0a0f;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:700;cursor:pointer}
+.bdism{background:none;border:1px solid var(--bdr);border-radius:7px;padding:5px 10px;color:var(--mut);font-family:'DM Sans',sans-serif;font-size:10px;cursor:pointer}
+.empty{text-align:center;padding:50px 16px;color:var(--mut)}
+.emi{font-size:40px;margin-bottom:12px}.emt{font-size:13px;line-height:1.7}
+
+/* CONTACT CARD */
+.contact-section{margin-bottom:20px}
+.contact-card{background:linear-gradient(135deg,#1a1200,var(--card) 60%,#001018);border:1px solid rgba(232,184,75,.3);border-radius:var(--r);padding:20px;margin-bottom:12px;position:relative;overflow:hidden}
+.contact-card::before{content:'';position:absolute;top:0;right:0;width:80px;height:80px;background:radial-gradient(circle,rgba(232,184,75,.15),transparent 70%)}
+.contact-role{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--acc);font-weight:600;margin-bottom:6px}
+.contact-name{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;margin-bottom:14px;color:var(--txt)}
+.contact-btns{display:flex;gap:8px;flex-wrap:wrap}
+.btn-call{display:flex;align-items:center;gap:7px;background:linear-gradient(135deg,var(--grn),#1a7a38);border:none;border-radius:9px;padding:10px 16px;color:#fff;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;text-decoration:none;flex:1;justify-content:center}
+.btn-call:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(39,174,96,.35)}
+.btn-wa{display:flex;align-items:center;gap:7px;background:linear-gradient(135deg,#25D366,#128C7E);border:none;border-radius:9px;padding:10px 16px;color:#fff;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;text-decoration:none;flex:1;justify-content:center}
+.btn-wa:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(37,211,102,.35)}
+.contact-icon{font-size:16px}
+</style>
+</head>
+<body>
+
+<!-- SPLASH -->
+<div id="splash" class="splash">
+  <div class="splash-icon">🌐</div>
+  <div class="splash-name">NEBRIN</div>
+  <div class="splash-tag">Online Service Company</div>
+  <div class="splash-bar"><div class="splash-progress"></div></div>
+  <div class="splash-ticker-wrap">
+    <div class="splash-ticker" id="splash-ticker-txt">✦ Karibu NEBRIN — Huduma za Kidigitali Tanzania 🇹🇿</div>
+  </div>
+  <script>
+  var splashMsgs=["✦ Karibu NEBRIN — Huduma za Kidigitali Tanzania 🇹🇿","🌐 Tovuti | 🛒 E-Commerce | 🎨 Graphics Design","📷 CCTV | 🪪 NIDA | 📜 Vyeti | 💳 Lipa Namba","⚡ Huduma za Haraka na za Kuaminika — Mbeya City"];
+  var si=0;
+  setInterval(function(){si=(si+1)%splashMsgs.length;var el=document.getElementById("splash-ticker-txt");if(el)el.textContent=splashMsgs[si];},2500);
+  </script>
+</div>
+
+<!-- UPDATE BANNER -->
+<div id="update-banner" class="update-banner">
+  <div class="update-icon">🔄</div>
+  <div class="update-txt">
+    <div class="update-title">Toleo Jipya Linapatikana!</div>
+    <div class="update-sub">Bonyeza "Sasisha" kupata maboresho mapya ya NEBRIN</div>
+  </div>
+  <button class="btn-update" onclick="doUpdate()">Sasisha Sasa</button>
+</div>
+
+<!-- AUTH -->
+<div id="pg-auth" class="page">
+  <div class="ticker-bar" id="ticker-bar">
+    <div class="ticker-inner" id="ticker-txt">✦ Karibu NEBRIN Online Service Company</div>
+  </div>
+  <script>
+  var tickerMsgs=[
+    "✦ Karibu NEBRIN Online Service Company 🌐",
+    "⚡ Tunaunda Tovuti za Kitaalamu — Mbeya, Tanzania",
+    "🎨 Graphics Design | 📷 CCTV | 🛒 E-Commerce",
+    "🪪 NIDA Online | 📜 Vyeti | 💳 Lipa Namba",
+    "📞 Huduma za Haraka — Wasiliana Nasi Leo!",
+    "🇹🇿 Mbeya City — Tunakufikia Kila Sehemu"
+  ];
+  var tickerIdx=0;
+  function rotateTicker(){
+    var el=document.getElementById("ticker-txt");
+    if(!el)return;
+    tickerIdx=(tickerIdx+1)%tickerMsgs.length;
+    el.textContent=tickerMsgs[tickerIdx];
+  }
+  setInterval(rotateTicker,3000);
+  </script>
+  <div class="awrap">
+    <div class="alogo">
+      <div class="aicon">🌐</div>
+      <div class="aname">NEBRIN</div>
+      <div class="atag">Online Service Company</div>
+    </div>
+    <div class="rolesw">
+      <button class="rbtn on" id="rb-client" onclick="pickRole('client')"><span class="ri">👤</span>Mteja</button>
+      <button class="rbtn" id="rb-staff" onclick="pickRole('staff')"><span class="ri">👨‍💼</span>Mtoa Huduma</button>
+    </div>
+    <div class="fcard">
+      <h1 class="ftitle" id="ftitle">Karibu tena</h1>
+      <p class="fsub" id="fsub">Ingia kama Mteja</p>
+      <div id="alrt" class="al"></div>
+      <!-- STEP 1: EMAIL/PASS -->
+      <div id="step-login">
+        <div class="fg"><label class="fl">Barua Pepe</label><input class="fi" id="eml" type="email" placeholder="jina@mfano.com"></div>
+        <div class="fg" id="pgrp"><label class="fl">Nenosiri</label>
+          <div class="pwrap"><input class="fi" id="pwd" type="password" placeholder="••••••••">
+          <button class="ebtn" type="button" onclick="togPwd()">👁</button></div>
+        </div>
+        <button class="bmain" id="bsub" type="button" onclick="doSubmit()">Ingia</button>
+        <div id="divsec">
+          <div class="div"><div class="dl"></div><div class="dt">au</div><div class="dl"></div></div>
+          <div class="sw"><span>Umesahau nenosiri?</span> <a onclick="setMode('reset')">Weka Upya</a></div>
+        </div>
+        <div class="sw" id="swbot"><span>Huna akaunti?</span> <a onclick="setMode('signup')">Jiandikishe</a></div>
+      </div>
+      <!-- STEP 2: MAGIC LINK SENT -->
+      <div id="step-otp" style="display:none">
+        <div style="text-align:center;padding:10px 0">
+          <div style="font-size:56px;margin-bottom:12px;animation:float 2s ease-in-out infinite">📧</div>
+          <div style="font-weight:700;font-size:17px;margin-bottom:8px;color:var(--txt)">Angalia Barua Pepe Yako!</div>
+          <div style="font-size:13px;color:var(--mut);line-height:1.7;margin-bottom:16px">
+            Kiungo cha kuingia kimetumwa kwa<br>
+            <b style="color:var(--acc)" id="otp-email-show">—</b>
+          </div>
+          <div style="background:rgba(232,184,75,.08);border:1px solid rgba(232,184,75,.2);border-radius:12px;padding:16px;margin-bottom:16px;text-align:left">
+            <div style="font-size:12px;color:var(--mut);margin-bottom:6px;font-weight:600">HATUA ZA KUFUATA:</div>
+            <div style="font-size:13px;color:var(--txt);line-height:2">
+              1️⃣ Fungua Gmail yako<br>
+              2️⃣ Tafuta barua pepe kutoka <b>Supabase Auth</b><br>
+              3️⃣ Bonyeza kiungo cha <b>"Log In"</b><br>
+              4️⃣ Utaingia moja kwa moja! ✅
+            </div>
+          </div>
+          <div style="font-size:12px;color:var(--mut);margin-bottom:16px">
+            ⏱️ Kiungo kinaisha baada ya <b>dakika 60</b>
+          </div>
+          <button class="bmain" type="button" onclick="resendOTP()" id="otp-resend-btn">
+            🔄 Tuma Tena
+          </button>
+          <div class="sw" style="margin-top:12px"><a onclick="cancelOTP()">← Rudi nyuma</a></div>
+        </div>
+      </div>
+      <!-- STEP 3: PROFILE SETUP (new users) -->
+      <div id="step-profile" style="display:none">
+        <div class="profile-steps">
+          <div class="pstep done"></div><div class="pstep done"></div><div class="pstep active"></div>
+        </div>
+        <div style="text-align:center;margin-bottom:18px">
+          <div style="font-size:32px;margin-bottom:6px">👤</div>
+          <div style="font-weight:700;font-size:15px;margin-bottom:3px">Kamilisha Wasifu Wako</div>
+          <div style="font-size:12px;color:var(--mut)">Taarifa hizi zitatusaidia kukufikia haraka</div>
+        </div>
+        <div class="fg"><label class="fl">Jina Kamili</label><input class="fi" id="prof-name" type="text" placeholder="Mfano: John Doe"></div>
+        <div class="fg">
+          <label class="fl">Namba ya Simu</label>
+          <div class="phone-flag">
+            <div class="phone-prefix">🇹🇿 +255</div>
+            <input class="fi phone-fi" id="prof-phone" type="tel" placeholder="712 345 678" maxlength="9">
+          </div>
+        </div>
+        <div class="fg"><label class="fl">Mkoa / Mji unaotoka</label>
+          <select class="fi" id="prof-region">
+            <option value="">-- Chagua Mkoa --</option>
+            <option>Mbeya</option><option>Dar es Salaam</option><option>Dodoma</option>
+            <option>Arusha</option><option>Mwanza</option><option>Tanga</option>
+            <option>Morogoro</option><option>Kigoma</option><option>Tabora</option>
+            <option>Iringa</option><option>Rukwa</option><option>Songwe</option>
+            <option>Ruvuma</option><option>Lindi</option><option>Mtwara</option>
+            <option>Pwani</option><option>Kilimanjaro</option><option>Manyara</option>
+            <option>Simiyu</option><option>Geita</option><option>Katavi</option>
+            <option>Njombe</option><option>Singida</option><option>Shinyanga</option>
+            <option>Kagera</option><option>Mara</option>
+          </select>
+        </div>
+        <div class="fg"><label class="fl">Mtaa / Kata (si lazima)</label><input class="fi" id="prof-area" type="text" placeholder="Mfano: Mwanjelwa, Uyole..."></div>
+        <div id="prof-alert" class="al"></div>
+        <button class="bmain" type="button" onclick="saveProfile()">💾 Hifadhi na Endelea</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CLIENT -->
+<div id="pg-client" class="page">
+  <div class="tb">
+    <div class="tbl"><div class="tbi">🌐</div><div class="tbn">NEBRIN</div></div>
+    <div class="tbr">
+      <div class="ubadge"><div class="uav uav-c" id="cav">NB</div><div class="uem" id="cem">—</div></div>
+      <span class="rtag rtag-c">Mteja</span>
+      <button class="bout" onclick="doLogout()">Toka</button>
+    </div>
+  </div>
+  <div class="bnav">
+    <button class="nb on" id="cn-home" onclick="cTab('ct-home')"><span class="ni">🏠</span>Nyumbani</button>
+    <button class="nb" id="cn-svc" onclick="cTab('ct-svc')"><span class="ni">⚡</span>Huduma</button>
+    <button class="nb" id="cn-req" onclick="cTab('ct-req')"><span class="ni">💬</span>Mazungumzo</button>
+  </div>
+  <div id="ct-home" class="sub active">
+    <div class="mb">
+      <div class="wbanner">
+        <div class="wlbl">✦ NEBRIN Online Service Company</div>
+        <div class="wtitle" id="cgreet">Karibu! 👋</div>
+        <div class="wsub" id="cwelcome-sub">Tunafurahi kukuona. Huduma 16 za kidigitali zinakusubiri!</div>
+      </div>
+      <div class="sgrid">
+        <div class="sbox"><div class="sico">⚡</div><div class="sval">16</div><div class="slbl">Huduma</div></div>
+        <div class="sbox"><div class="sico">💬</div><div class="sval" id="creqc">0</div><div class="slbl">Mazungumzo</div></div>
+        <div class="sbox"><div class="sico">✅</div><div class="sval" id="crplc">0</div><div class="slbl">Yaliyojibiwa</div></div>
+        <div class="sbox"><div class="sico">📍</div><div class="sval" id="cloc" style="font-size:11px">—</div><div class="slbl">Eneo lako</div></div>
+      </div>
+      <button class="bmain" style="max-width:260px;display:block;margin:0 auto" onclick="cTab('ct-svc')">⚡ Angalia Huduma Zetu</button>
+
+      <!-- CONTACT SECTION -->
+      <div class="contact-section" style="margin-top:24px">
+        <div class="sectit">📞 Wasiliana Na Wakuu</div>
+
+        <div class="contact-card">
+          <div class="contact-role">✦ C.E.O &amp; IT Director</div>
+          <div class="contact-name">Justine Asajile Mwalusako</div>
+          <div class="contact-btns">
+            <a class="btn-call" href="tel:+255743749792">
+              <span class="contact-icon">📞</span> Piga Simu
+            </a>
+            <a class="btn-wa" href="https://wa.me/255742479785" target="_blank">
+              <span class="contact-icon">💬</span> WhatsApp
+            </a>
+          </div>
+        </div>
+
+        <!-- Company info -->
+        <div style="background:var(--card);border:1px solid var(--bdr);border-radius:var(--r);padding:16px;text-align:center">
+          <div style="font-size:11px;color:var(--mut);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px">Ofisi Yetu</div>
+          <div style="font-size:14px;font-weight:600;margin-bottom:4px">🌐 NEBRIN Online Service Company</div>
+          <div style="font-size:13px;color:var(--mut)">📍 Mbeya City, Tanzania 🇹🇿</div>
+          <div style="font-size:13px;color:var(--mut);margin-top:4px">📧 nebrinonline@gmail.com</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="ct-svc" class="sub">
+    <div class="mb"><div class="sectit">⚡ Huduma Zetu (16)</div><div class="sclist" id="svclst"></div></div>
+  </div>
+  <div id="ct-req" class="sub">
+    <div class="mb"><div class="sectit">💬 Mazungumzo Yangu</div><div id="creqlst"></div></div>
+  </div>
+</div>
+
+<!-- STAFF -->
+<div id="pg-staff" class="page">
+  <div class="tb">
+    <div class="tbl"><div class="tbi">🌐</div><div class="tbn">NEBRIN</div></div>
+    <div class="tbr">
+      <div class="ubadge"><div class="uav uav-s" id="sav">NB</div><div class="uem" id="sem">—</div></div>
+      <span class="rtag rtag-s">Staff</span>
+      <button class="bout" onclick="doLogout()">Toka</button>
+    </div>
+  </div>
+  <div class="bnav">
+    <button class="nb on" id="sn-home" onclick="sTab('st-home')"><span class="ni">🏠</span>Nyumbani</button>
+    <button class="nb" id="sn-req" onclick="sTab('st-req')"><span class="ni">📥</span>Maombi</button>
+    <button class="nb" id="sn-adm" onclick="sTab('st-adm')" style="display:none"><span class="ni">⚙️</span>Admin</button>
+  </div>
+  <div id="st-home" class="sub active">
+    <div class="mb">
+      <div class="wbanner">
+        <div class="wlbl">✦ Paneli ya Mtoa Huduma</div>
+        <div class="wtitle" id="sgreet">Karibu! 👋</div>
+        <div class="wsub">Angalia maombi ya wateja na jibu kwa haraka na upole.</div>
+      </div>
+      <div class="sgrid">
+        <div class="sbox"><div class="sico">📥</div><div class="sval" id="stotc">0</div><div class="slbl">Maombi yote</div></div>
+        <div class="sbox"><div class="sico">⏳</div><div class="sval" id="spendc">0</div><div class="slbl">Yanayosubiri</div></div>
+        <div class="sbox"><div class="sico">✅</div><div class="sval" id="sdonec">0</div><div class="slbl">Yaliyojibiwa</div></div>
+        <div class="sbox"><div class="sico">📅</div><div class="sval" id="sdate" style="font-size:13px">—</div><div class="slbl">Leo</div></div>
+      </div>
+      <button class="bmain" style="max-width:260px;display:block;margin:0 auto" onclick="sTab('st-req')">📥 Angalia Maombi</button>
+    </div>
+  </div>
+  <div id="st-req" class="sub">
+    <div class="mb"><div class="sectit">📥 Maombi ya Wateja</div><div id="sreqlst"></div></div>
+  </div>
+  <div id="st-adm" class="sub">
+    <div class="mb">
+      <div class="sectit">⚙️ Usimamizi wa Watoa Huduma</div>
+      <div class="adcard">
+        <div class="adtitle">➕ Ongeza Mtoa Huduma</div>
+        <div class="adsub">Baada ya kuongeza, ataweza kuingia kupitia sehemu ya "Mtoa Huduma"</div>
+        <div class="fg"><label class="fl">Barua Pepe</label><input class="fi" id="nse" type="email" placeholder="mtoa@mfano.com"></div>
+        <div class="fg"><label class="fl">Jina Kamili</label><input class="fi" id="nsn" type="text" placeholder="Jina la mtoa huduma"></div>
+        <div class="fg"><label class="fl">Jukumu</label>
+          <select class="fi" id="nsr">
+            <option value="msanifu_tovuti">🌐 Msanifu wa Tovuti</option>
+            <option value="graphics">🎨 Graphics Designer</option>
+            <option value="masoko">📢 Masoko ya Kidijitali</option>
+            <option value="docs">📜 Msaidizi wa Nyaraka</option>
+            <option value="usalama">📷 Usalama (CCTV/Fence)</option>
+            <option value="benki">🏦 Msaidizi Benki/NIDA</option>
+            <option value="mshauri">💼 Mshauri wa Wateja</option>
+            <option value="general">⚡ Mtoa Huduma wa Jumla</option>
+          </select>
+        </div>
+        <div id="admalrt" class="al"></div>
+        <button class="bmain" type="button" onclick="addStaff()" id="badds">➕ Ongeza Mtoa Huduma</button>
+      </div>
+      <div class="sectit">👥 Watoa Huduma Waliopo</div>
+      <div id="stlst"></div>
+    </div>
+  </div>
+</div>
+
+<!-- REQUEST MODAL -->
+<div class="mov" id="modal">
+  <div class="mbox">
+    <div class="mtitle">📤 Omba Huduma</div>
+    <div class="msub">Tuambie mahitaji yako — tutawasiliana nawe haraka</div>
+    <div class="msvc"><span id="msvi" style="font-size:22px">🌐</span><div class="msvcn" id="msvn">—</div></div>
+    <label class="fl" style="margin-bottom:5px">Ujumbe wako (si lazima)</label>
+    <textarea class="mta" id="mmsg" placeholder="Eleza zaidi mahitaji yako..."></textarea>
+    <div id="malrt" class="al" style="margin-top:9px"></div>
+    <div class="mbtns">
+      <button class="bcancel" type="button" onclick="closeModal()">Ghairi</button>
+      <button class="bsend" type="button" id="bsend" onclick="submitReq()">📤 Tuma Ombi</button>
+    </div>
+  </div>
+</div>
+
+<!-- AUTO-LOGOUT WARNING -->
+<div class="logout-warning" id="logout-warning">
+  <div class="lw-icon">⚠️</div>
+  <div class="lw-txt">
+    <div class="lw-title">Utatolewa Muda Huu!</div>
+    <div class="lw-sub">Bonyeza "Endelea" kubaki umeloginiwa</div>
+  </div>
+  <div class="lw-timer" id="lw-count">30</div>
+  <button class="btn-stay" onclick="stayLoggedIn()">Endelea</button>
+</div>
+
+<!-- NIGHT MODE TOGGLE -->
+<div class="night-toggle" id="night-toggle" onclick="toggleNightMode()" style="display:none" title="Badilisha mwangaza">🌙</div>
+
+<!-- PWA BANNER -->
+<div class="pwab" id="pwab">
+  <div class="pwai">🌐</div>
+  <div class="pwat"><div class="pwatt">Pakua App ya NEBRIN</div><div class="pwas">Weka simu yako bila Play Store!</div></div>
+  <div class="pwabtns">
+    <button class="binstall" onclick="instPWA()">📲 Pakua App</button>
+    <button class="bdism" onclick="dismPWA()">Baadaye</button>
+  </div>
+</div>
+
+<script>
+var APP_VERSION = "1.0.5";
+var SB_URL="https://oguukuhflamwmgrbdqfk.supabase.co";
+var SB_KEY="sb_publishable_DfUyGsd9bdFBJmouRZf5Rw_SQBnUYXE";
+var sb=supabase.createClient(SB_URL,SB_KEY);
+var ADMIN="nebrinonline@gmail.com";
+var STAFF_EMAILS=["nebrinonline@gmail.com","juaszdelove1@gmail.com"];
+var curUser=null,curRole=null,selectedRole="client",authMode="login";
+var modalSvcId=null,allReqs=[];
+var otpCode=null,otpEmail=null,otpTimer=null,otpUser=null,pendingPass=null;
+var RLABELS={msanifu_tovuti:"🌐 Msanifu wa Tovuti",graphics:"🎨 Graphics Designer",masoko:"📢 Masoko ya Kidijitali",docs:"📜 Msaidizi wa Nyaraka",usalama:"📷 Usalama",benki:"🏦 Msaidizi Benki/NIDA",mshauri:"💼 Mshauri wa Wateja",general:"⚡ Mtoa Huduma wa Jumla"};
+
+var SVCS=[
+  {id:1,icon:"🌐",name:"Uundaji wa Tovuti",desc:"Tovuti za kitaalamu zinazovutia wateja. Muundo mzuri, haraka, inayofanya kazi simu na kompyuta.",fts:["Muundo wa kisasa","Inafanya kazi simu","SEO optimization","Kiswahili/Kiingereza"]},
+  {id:2,icon:"🛒",name:"Tovuti ya Biashara (E-Commerce)",desc:"Duka la kidijitali lenye mfumo wa malipo, orodha ya bidhaa, na usimamizi rahisi.",fts:["Duka la mtandaoni","Mfumo wa malipo","Orodha ya bidhaa","Dashboard ya mauzo"]},
+  {id:3,icon:"📱",name:"Usanifu wa Mfumo wa App",desc:"Mifumo ya kidijitali na programu maalum kwa biashara yako.",fts:["Mfumo wa login","Database ya wateja","Ripoti za biashara","Usalama wa data"]},
+  {id:4,icon:"🎨",name:"Usanifu wa Brand & Logo",desc:"Nembo, rangi za kampuni, kadi za biashara, na mwonekano wote wa brand yako.",fts:["Logo ya kitaalamu","Brand guidelines","Kadi za biashara","Maudhui ya mitandao"]},
+  {id:5,icon:"📢",name:"Masoko ya Kidijitali",desc:"Fikia wateja zaidi kupitia mitandao ya kijamii, Google, na matangazo ya kidijitali.",fts:["Social media management","Google Ads","Content creation","Ripoti za kila wiki"]},
+  {id:6,icon:"🔧",name:"Matengenezo ya Tovuti",desc:"Usasishaji, usalama, nakala rudufu, na msaada wa dharura kwa tovuti yako.",fts:["Usasishaji","Usalama wa tovuti","Nakala rudufu","Msaada wa dharura"]},
+  {id:7,icon:"📧",name:"Barua Pepe ya Kampuni",desc:"Barua pepe yenye jina lako la kampuni mfano: info@kampuniyako.co.tz",fts:["Barua pepe yako","Storage kubwa","Usalama wa juu","Msaada wa usanidi"]},
+  {id:8,icon:"📊",name:"Mafunzo ya Teknolojia",desc:"Mafunzo ya vitendo ya teknolojia kwa wafanyabiashara.",fts:["Mafunzo ya vitendo","Kikundi au binafsi","Nyaraka za kujifunza","Msaada baadaye"]},
+  {id:9,icon:"📜",name:"Vyeti vya Kuzaliwa — Siku 3",desc:"Kupata cheti cha kuzaliwa haraka ndani ya siku 3.",fts:["Haraka siku 3","Msaada wa maombi","Ushauri wa bure","Ufuatiliaji"]},
+  {id:10,icon:"🪪",name:"Pata NIDA Online — Siku 5",desc:"Usajili wa NIDA ukiwa nyumbani ndani ya siku 5.",fts:["NIDA mtandaoni","Siku 5 tu","Bila foleni","Msaada wote"]},
+  {id:11,icon:"📡",name:"Laini za Uwakala — Mitandao Yote",desc:"Laini za uwakala Vodacom, Airtel, Tigo, Halotel, TTCL.",fts:["Vodacom Airtel Tigo","Halotel TTCL","Usajili kamili","Mafunzo ya mfumo"]},
+  {id:12,icon:"🏦",name:"Fungua Account ya CRDB Bank",desc:"Kufungua akaunti ya CRDB bila msongo.",fts:["Akaunti ya CRDB","Msaada wa nyaraka","Hatua rahisi","Ushauri wa bure"]},
+  {id:13,icon:"✅",name:"Certificate Verification",desc:"Uthibitisho wa vyeti vya elimu, kazi, na mafunzo.",fts:["Vyeti vya elimu","Vyeti vya kazi","Uthibitisho rasmi","Hati za matokeo"]},
+  {id:14,icon:"💳",name:"Pata Lipa Namba — Mitandao Yote",desc:"Namba ya Lipa kwa mitandao yote.",fts:["M-Pesa Till Number","Airtel Money","Tigo Pesa","Halopesa zaidi"]},
+  {id:15,icon:"🖼️",name:"Graphics Design",desc:"Picha za kitaalamu kwa matumizi ya biashara yako.",fts:["Matangazo ya biashara","Social media posts","Mabango flyers","Kadi za biashara"]},
+  {id:16,icon:"📷",name:"CCTV Camera & Electronic Fence",desc:"Usalama wa nyumba au biashara! CCTV na uzio wa umeme.",fts:["CCTV cameras","Electronic fence","Ufuatiliaji wa mbali","Matengenezo"]}
+];
+
+// ── INIT ──
+function appInit(){
+  checkVersion();
+  document.getElementById("eml").addEventListener("keydown",function(e){if(e.key==="Enter")doSubmit();});
+  document.getElementById("pwd").addEventListener("keydown",function(e){if(e.key==="Enter")doSubmit();});
+  document.getElementById("modal").addEventListener("click",function(e){if(e.target===this)closeModal();});
+  renderSvcs();
+  var appStarted=false;
+
+  // Handle magic link redirect (SIGNED_IN from email link)
+  sb.auth.onAuthStateChange(function(event,session){
+    if(event==="SIGNED_IN"&&session&&session.user&&!appStarted){
+      appStarted=true;
+      loadStaff().then(function(){
+        var email=session.user.email.toLowerCase();
+        var isStaff=STAFF_EMAILS.map(function(e){return e.toLowerCase();}).includes(email);
+        selectedRole=isStaff?"staff":"client";
+        selRoleUI(selectedRole);
+        enterApp(session.user);
+      });
+    }
+  });
+
+  // Restore existing session on page load
+  loadStaff().then(function(){
+    return sb.auth.getSession();
+  }).then(function(r){
+    var s=r.data?r.data.session:null;
+    if(s&&s.user&&!appStarted){
+      appStarted=true;
+      selectedRole="client";
+      selRoleUI("client");
+      enterApp(s.user);
+    } else if(!s){
+      // No session - show auth page
+      document.getElementById("pg-auth").classList.add("active");
+    }
+  }).catch(function(e){
+    console.error("Init:",e.message);
+    document.getElementById("pg-auth").classList.add("active");
+  });
+  initPWA();
+  checkNightMode();
+  // Hide splash after 2.8s then show auth
+  setTimeout(function(){
+    var sp=document.getElementById("splash");
+    if(sp){
+      sp.style.opacity="0";
+      sp.style.transition="opacity .6s ease";
+      setTimeout(function(){
+        sp.style.display="none";
+        // Auth page shown by getSession callback
+      },600);
+    }
+  },2800);
+}
+if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",appInit);}else{appInit();}
+
+// ── VERSION CHECK ──
+function checkVersion(){
+  var saved=localStorage.getItem("nebrin_version");
+  if(saved&&saved!==APP_VERSION){
+    document.getElementById("update-banner").classList.add("show");
+  }
+  localStorage.setItem("nebrin_version",APP_VERSION);
+}
+function doUpdate(){
+  if("serviceWorker"in navigator){
+    navigator.serviceWorker.getRegistrations().then(function(regs){
+      regs.forEach(function(reg){reg.unregister();});
+    });
+  }
+  if("caches"in window){
+    caches.keys().then(function(keys){keys.forEach(function(k){caches.delete(k);});});
+  }
+  window.location.reload(true);
+}
+
+// ── LOAD STAFF ──
+function loadStaff(){
+  return sb.from("staff_members").select("email").then(function(r){
+    if(!r.error&&r.data&&r.data.length){
+      var db=r.data.map(function(s){return s.email.toLowerCase().trim();});
+      STAFF_EMAILS=Array.from(new Set([ADMIN.toLowerCase()].concat(db)));
+    }
+  }).catch(function(){});
+}
+
+// ── ROLE SELECT ──
+function pickRole(r){selectedRole=r;selRoleUI(r);setMode(authMode);}
+function selRoleUI(r){
+  document.getElementById("rb-client").classList.toggle("on",r==="client");
+  document.getElementById("rb-staff").classList.toggle("on",r==="staff");
+}
+
+// ── AUTH MODE ──
+function setMode(m){
+  authMode=m;clrAlert();
+  var isStaff=selectedRole==="staff";
+  var T={
+    login:["Karibu tena",isStaff?"Ingia kama Mtoa Huduma":"Ingia kama Mteja","Ingia"],
+    signup:["Unda Akaunti","Jiunge leo na NEBRIN","Unda Akaunti"],
+    reset:["Weka Upya Nenosiri","Tutakutumia barua pepe ya kubadilisha","Tuma Barua Pepe"]
+  };
+  document.getElementById("ftitle").textContent=T[m][0];
+  document.getElementById("fsub").textContent=T[m][1];
+  document.getElementById("bsub").textContent=T[m][2];
+  document.getElementById("pgrp").style.display=m==="reset"?"none":"block";
+  document.getElementById("divsec").style.display=m==="login"?"block":"none";
+  document.getElementById("swbot").innerHTML=m==="login"
+    ?'<span>Huna akaunti?</span> <a onclick="setMode(\'signup\')">Jiandikishe</a>'
+    :'<span>Una akaunti?</span> <a onclick="setMode(\'login\')">Ingia</a>';
+}
+
+// ── SUBMIT ──
+function doSubmit(){
+  var email=document.getElementById("eml").value.trim().toLowerCase();
+  var pass=document.getElementById("pwd").value;
+  var btn=document.getElementById("bsub");
+  if(!email||(!pass&&authMode!=="reset")){showAlert("Tafadhali jaza sehemu zote.","err");return;}
+  if(authMode==="login"&&selectedRole==="staff"){
+    var allowed=STAFF_EMAILS.map(function(e){return e.toLowerCase().trim();});
+    if(!allowed.includes(email)){showAlert("Barua pepe hii haina ruhusa ya Mtoa Huduma. Wasiliana na Admin.","err");return;}
+  }
+  if(authMode==="signup"&&selectedRole==="staff"){showAlert("Usajili wa Mtoa Huduma unafanywa na Admin tu.","err");return;}
+  btn.disabled=true;btn.innerHTML='<span class="sp"></span> Subiri...';clrAlert();
+  if(authMode==="login"){
+    // Login with password directly - no OTP needed
+    sb.auth.signInWithPassword({email:email,password:pass}).then(function(r){
+      if(r.error)throw r.error;
+      appStarted=true;
+      btn.disabled=false;btn.textContent="Ingia";
+      enterApp(r.data.user);
+    }).catch(function(e){
+      var m={"Invalid login credentials":"Barua pepe au nenosiri si sahihi."};
+      showAlert(m[e.message]||e.message,"err");btn.disabled=false;btn.textContent="Ingia";
+    });
+  }else if(authMode==="signup"){
+    sb.auth.signUp({email:email,password:pass,options:{emailRedirectTo:window.location.href}}).then(function(r){
+      if(r.error)throw r.error;
+      // Show magic link step for email verification
+      otpEmail=email;otpUser=r.data.user;
+      showOTPStep(email,r.data.user);
+      btn.disabled=false;btn.textContent="Unda Akaunti";
+    }).catch(function(e){showAlert(e.message,"err");btn.disabled=false;btn.textContent="Unda Akaunti";});
+  }else{
+    sb.auth.resetPasswordForEmail(email,{redirectTo:window.location.href}).then(function(){
+      showAlert("Barua pepe imetumwa! Angalia inbox yako.","ok");
+      btn.disabled=false;btn.textContent="Tuma Barua Pepe";
+    }).catch(function(e){showAlert(e.message,"err");btn.disabled=false;btn.textContent="Tuma Barua Pepe";});
+  }
+}
+
+// ── OTP ──
+function generateOTP(){return Math.floor(100000+Math.random()*900000).toString();}
+
+function showOTPStep(email,user){
+  otpEmail=email;otpUser=user;
+  document.getElementById("step-login").style.display="none";
+  document.getElementById("step-otp").style.display="block";
+  document.getElementById("otp-email-show").textContent=email;
+  clrAlert();
+}
+
+// OTP/Magic link helpers (simplified)
+
+function proceedAfterOTP(){
+  document.getElementById("step-otp").style.display="none";
+  sb.from("user_profiles").select("*").eq("user_id",otpUser.id).then(function(r){
+    if(!r.error&&r.data&&r.data.length>0){enterApp(otpUser);}
+    else{document.getElementById("step-profile").style.display="block";}
+  }).catch(function(){enterApp(otpUser);});
+}
+
+
+
+function resendOTP(){
+  var btn=document.getElementById("otp-resend-btn");
+  if(btn){btn.disabled=true;btn.innerHTML='<span class="sp"></span> Inatuma...';}
+  sb.auth.resend({type:"signup",email:otpEmail,options:{emailRedirectTo:window.location.href}})
+  .then(function(r){
+    if(r.error){
+      // Try magic link instead
+      return sb.auth.signInWithOtp({email:otpEmail,options:{shouldCreateUser:false}});
+    }
+  }).then(function(){
+    if(btn){btn.disabled=false;btn.textContent="🔄 Tuma Tena";}
+    showAlert("Barua pepe nyingine imetumwa! Angalia inbox yako.","ok");
+  }).catch(function(e){
+    if(btn){btn.disabled=false;btn.textContent="🔄 Tuma Tena";}
+    showAlert("Hitilafu: "+e.message,"err");
+  });
+}
+
+function cancelOTP(){
+  if(otpTimer)clearInterval(otpTimer);
+  sb.auth.signOut();
+  document.getElementById("step-otp").style.display="none";
+  document.getElementById("step-login").style.display="block";
+  clrAlert();
+}
+
+// ── PROFILE SETUP ──
+function saveProfile(){
+  var name=document.getElementById("prof-name").value.trim();
+  var phone=document.getElementById("prof-phone").value.trim();
+  var region=document.getElementById("prof-region").value;
+  var area=document.getElementById("prof-area").value.trim();
+  var al=document.getElementById("prof-alert");
+  if(!name||!phone||!region){al.textContent="Tafadhali jaza jina, simu, na mkoa.";al.className="al on err";return;}
+  if(phone.length<9){al.textContent="Namba ya simu si sahihi.";al.className="al on err";return;}
+  al.className="al";
+  var profileData={
+    user_id:otpUser.id,email:otpUser.email,full_name:name,
+    phone:"+255"+phone,region:region,area:area||null,
+    created_at:new Date().toISOString()
+  };
+  sb.from("user_profiles").insert([profileData]).then(function(r){
+    if(r.error)throw r.error;
+    document.getElementById("step-profile").style.display="none";
+    enterApp(otpUser);
+  }).catch(function(e){
+    // If already exists, update
+    sb.from("user_profiles").update(profileData).eq("user_id",otpUser.id).then(function(){
+      document.getElementById("step-profile").style.display="none";
+      enterApp(otpUser);
+    }).catch(function(e2){al.textContent="Hitilafu: "+e2.message;al.className="al on err";});
+  });
+}
+
+// ── ENTER APP ──
+function enterApp(user){
+  curUser=user;
+  var email=user.email.toLowerCase().trim();
+  var isStaff=STAFF_EMAILS.map(function(e){return e.toLowerCase();}).includes(email);
+  if(selectedRole==="staff"&&!isStaff){
+    sb.auth.signOut();curUser=null;
+    showAlert("Huna ruhusa ya Mtoa Huduma. Wasiliana na Admin.","err");
+    var b=document.getElementById("bsub");if(b){b.disabled=false;b.textContent="Ingia";}return;
+  }
+  curRole=(selectedRole==="staff"&&isStaff)?"staff":"client";
+  // Hide ALL pages first
+  document.querySelectorAll(".page").forEach(function(p){p.classList.remove("active");});
+  var h=new Date().getHours();
+  var gr=h<12?"Habari za asubuhi":h<17?"Habari za mchana":"Habari za jioni";
+  var nm=email.split("@")[0];
+  var dt=new Date().toLocaleDateString("sw-TZ",{day:"2-digit",month:"short",year:"numeric"});
+  var ini=email.slice(0,2).toUpperCase();
+  // Reset OTP form
+  document.getElementById("step-login").style.display="block";
+  document.getElementById("step-otp").style.display="none";
+  document.getElementById("step-profile").style.display="none";
+  if(curRole==="staff"){
+    document.getElementById("pg-staff").classList.add("active");
+    document.getElementById("sav").textContent=ini;
+    document.getElementById("sem").textContent=email;
+    document.getElementById("sgreet").textContent=gr+", "+nm+"! 👋";
+    document.getElementById("sdate").textContent=dt;
+    var admbtn=document.getElementById("sn-adm");
+    if(admbtn)admbtn.style.display=email===ADMIN.toLowerCase()?"flex":"none";
+    loadAllReqs();startStaffRT();
+    startAutoLogout();
+    showNightToggle(true);
+  }else{
+    document.getElementById("pg-client").classList.add("active");
+    document.getElementById("cav").textContent=ini;
+    document.getElementById("cem").textContent=email;
+    document.getElementById("sgreet") && (document.getElementById("sgreet").textContent=gr+", "+nm+"! 👋");
+    document.getElementById("cgreet").textContent=gr+", "+nm+"! 👋";
+    // Load profile
+    sb.from("user_profiles").select("*").eq("user_id",user.id).then(function(r){
+      if(!r.error&&r.data&&r.data.length){
+        var p=r.data[0];
+        var loc=(p.region||"")+(p.area?", "+p.area:"");
+        document.getElementById("cloc").textContent=loc||"—";
+        var wsub=p.full_name?"Karibu, "+p.full_name+"! Huduma 16 zinakusubiri.":"Tunafurahi kukuona. Huduma 16 za kidigitali zinakusubiri!";
+        document.getElementById("cwelcome-sub").textContent=wsub;
+        document.getElementById("cav").textContent=(p.full_name||email).slice(0,2).toUpperCase();
+      }
+    }).catch(function(){});
+    loadClientReqs();startClientRT();
+    startAutoLogout();
+    showNightToggle(true);
+  }
+}
+
+// ── LOGOUT ──
+function doLogout(){
+  appStarted=false;
+  stopAutoLogout();
+  showNightToggle(false);
+  sb.auth.signOut();curUser=null;curRole=null;
+  document.querySelectorAll(".page").forEach(function(p){p.classList.remove("active");});
+  document.getElementById("pg-auth").classList.add("active");
+  document.getElementById("eml").value="";document.getElementById("pwd").value="";
+  setMode("login");cTab("ct-home");sTab("st-home");
+}
+
+// ── TABS ──
+function cTab(id){
+  document.querySelectorAll("#pg-client .sub").forEach(function(p){p.classList.remove("active");});
+  document.querySelectorAll("#pg-client .nb").forEach(function(b){b.classList.remove("on");});
+  document.getElementById(id).classList.add("active");
+  var m={"ct-home":"cn-home","ct-svc":"cn-svc","ct-req":"cn-req"};
+  document.getElementById(m[id]).classList.add("on");window.scrollTo(0,0);
+}
+function sTab(id){
+  document.querySelectorAll("#pg-staff .sub").forEach(function(p){p.classList.remove("active");});
+  document.querySelectorAll("#pg-staff .nb").forEach(function(b){b.classList.remove("on");});
+  document.getElementById(id).classList.add("active");
+  var m={"st-home":"sn-home","st-req":"sn-req","st-adm":"sn-adm"};
+  if(m[id])document.getElementById(m[id]).classList.add("on");
+  if(id==="st-adm")loadStaffList();window.scrollTo(0,0);
+}
+
+// ── RENDER SERVICES ──
+function renderSvcs(){
+  var el=document.getElementById("svclst");
+  el.innerHTML=SVCS.map(function(s){
+    return '<div class="scrd"><div class="shead"><div class="siw">'+s.icon+'</div><div class="sname">'+s.name+'</div></div>'
+      +'<div class="sdesc">'+s.desc+'</div>'
+      +'<div class="sfts">'+s.fts.map(function(f){return '<span class="sft">'+f+'</span>';}).join('')+'</div>'
+      +'<button class="breq" id="sb'+s.id+'" type="button" onclick="openModal('+s.id+')">📤 Omba Huduma Hii</button>'
+      +'</div>';
+  }).join('');
+}
+
+// ── MODAL ──
+function openModal(sid){
+  var s=SVCS.find(function(x){return x.id===sid;});if(!s)return;
+  modalSvcId=sid;
+  document.getElementById("msvi").textContent=s.icon;
+  document.getElementById("msvn").textContent=s.name;
+  document.getElementById("mmsg").value="";
+  var al=document.getElementById("malrt");al.className="al";al.textContent="";
+  var btn=document.getElementById("bsend");btn.disabled=false;btn.textContent="📤 Tuma Ombi";
+  var ov=document.getElementById("modal");ov.style.display="flex";ov.classList.add("on");
+  document.body.style.overflow="hidden";
+}
+function closeModal(){
+  var ov=document.getElementById("modal");ov.style.display="none";ov.classList.remove("on");
+  document.body.style.overflow="";modalSvcId=null;
+}
+
+// ── SUBMIT REQUEST ──
+function submitReq(){
+  var s=SVCS.find(function(x){return x.id===modalSvcId;});if(!s)return;
+  var msg=document.getElementById("mmsg").value.trim();
+  var btn=document.getElementById("bsend");
+  var al=document.getElementById("malrt");
+  btn.disabled=true;btn.innerHTML='<span class="sp"></span> Inatuma...';
+  // Get user profile for better auto-reply
+  sb.from("user_profiles").select("*").eq("user_id",curUser.id).then(function(pr){
+    var profile=(!pr.error&&pr.data&&pr.data.length)?pr.data[0]:null;
+    var clientName=profile?profile.full_name:curUser.email.split("@")[0];
+    var clientPhone=profile?profile.phone:"—";
+    var clientLocation=profile?(profile.region+(profile.area?", "+profile.area:"")):"Haijatajwa";
+    var now=new Date().toISOString();
+    var autoMsg="Habari "+clientName+",\n\n✅ Ombi lako la huduma ya *"+s.name+"* tumelipokea vizuri!\n\nTimu yetu itakuwasiliana nawe hivi karibuni (ndani ya masaa 24) kupitia simu au mazungumzo haya.\n\n📞 Simu yako: "+clientPhone+"\n📍 Eneo lako: "+clientLocation+"\n\nAsante kwa kuamini NEBRIN! 🌐\n— Timu ya NEBRIN, Mbeya";
+    var msgs=[];
+    if(msg)msgs.push({sender:"client",sender_name:clientName,text:msg,ts:now});
+    msgs.push({sender:"auto",sender_name:"NEBRIN Support",text:autoMsg,ts:now});
+    var data={
+      service_id:s.id,service_name:s.name,service_icon:s.icon,
+      client_email:curUser.email.toLowerCase().trim(),client_id:curUser.id,
+      client_name:clientName,client_phone:clientPhone,client_location:clientLocation,
+      messages:JSON.stringify(msgs),status:"active",
+      created_at:now,updated_at:now
+    };
+    return sb.from("service_requests").insert([data]).select();
+  }).then(function(r){
+    if(r.error)throw r.error;
+    al.textContent="Ombi limetumwa kikamilifu! Angalia sehemu ya Mazungumzo.";al.className="al on ok";
+    btn.textContent="✅ Imetumwa!";
+    var sb2=document.getElementById("sb"+s.id);
+    if(sb2){sb2.textContent="✅ Ombi Limetumwa";sb2.classList.add("sent");sb2.disabled=true;}
+    loadClientReqs();setTimeout(closeModal,2200);
+  }).catch(function(e){
+    al.textContent="Hitilafu: "+e.message;al.className="al on err";
+    btn.disabled=false;btn.textContent="📤 Tuma Ombi";
+  });
+}
+
+// ── CHAT RENDER ──
+function renderChatCard(req,isStaff){
+  var msgs=[];
+  try{msgs=JSON.parse(req.messages||"[]");}catch(e){msgs=[];}
+  var lastMsg=msgs.length?msgs[msgs.length-1]:null;
+  var hasNewFromClient=lastMsg&&(lastMsg.sender==="client")&&isStaff;
+  var html='<div class="chat-card" id="cc'+req.id+'">';
+  html+='<div class="chat-header" id="ch'+req.id+'" onclick="toggleChat(\''+req.id+'\')">';
+  html+='<div class="chat-svc-icon">'+(req.service_icon||"📋")+'</div>';
+  html+='<div style="flex:1"><div class="chat-svc-name">'+req.service_name+'</div>';
+  if(isStaff){
+    html+='<div class="chat-client">👤 '+(req.client_name||req.client_email)+'</div>';
+    if(req.client_phone&&req.client_phone!=="—")html+='<div style="font-size:11px;color:var(--mut)">📞 '+req.client_phone+'</div>';
+    if(req.client_location&&req.client_location!=="Haijatajwa")html+='<div style="font-size:11px;color:var(--mut)">📍 '+req.client_location+'</div>';
+  }
+  html+='</div>';
+  html+='<div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px">';
+  html+='<span class="chat-time">'+new Date(req.created_at).toLocaleDateString("sw-TZ",{day:"2-digit",month:"short"})+'</span>';
+  if(hasNewFromClient)html+='<span class="chat-badge cb-new">Jibu!</span>';
+  else html+='<span class="chat-badge cb-open">'+msgs.length+'</span>';
+  html+='</div></div>';
+  // Chat body
+  html+='<div id="cm'+req.id+'" style="display:none">';
+  html+='<div class="chat-msgs" id="msgs'+req.id+'">';
+  html+=msgs.map(function(m){
+    var cls=m.sender==="client"?"msg-client":m.sender==="auto"?"msg-auto":"msg-staff";
+    return '<div class="msg-bubble '+cls+'"><div class="msg-sender">'+esc(m.sender_name||m.sender)+'</div>'+esc(m.text).replace(/\n/g,"<br>")+'<div class="msg-time">'+fmtTime(m.ts)+'</div></div>';
+  }).join('');
+  html+='</div>';
+  html+='<div class="chat-input-wrap">';
+  html+='<textarea class="chat-input" id="ci'+req.id+'" placeholder="Andika ujumbe..." rows="1" oninput="autoResize(this)" onkeydown="chatEnter(event,\''+req.id+'\')"></textarea>';
+  html+='<button class="chat-send-btn" id="csb'+req.id+'" type="button" onclick="sendMsg(\''+req.id+'\')">➤</button>';
+  html+='</div></div></div>';
+  return html;
+}
+
+function toggleChat(rid){
+  var el=document.getElementById("cm"+rid);
+  var hd=document.getElementById("ch"+rid);
+  if(!el)return;
+  var open=el.style.display!=="none";
+  el.style.display=open?"none":"block";
+  if(hd)hd.classList.toggle("open",!open);
+  if(!open){var msgs=document.getElementById("msgs"+rid);if(msgs)setTimeout(function(){msgs.scrollTop=msgs.scrollHeight;},50);}
+}
+function autoResize(el){el.style.height="40px";el.style.height=Math.min(el.scrollHeight,100)+"px";}
+function chatEnter(e,rid){if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();sendMsg(rid);}}
+function esc(t){return (t||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+function fmtTime(ts){try{return new Date(ts).toLocaleTimeString("sw-TZ",{hour:"2-digit",minute:"2-digit"});}catch(e){return "";}}
+
+// ── SEND MESSAGE ──
+function sendMsg(rid){
+  var ta=document.getElementById("ci"+rid);if(!ta)return;
+  var txt=ta.value.trim();if(!txt)return;
+  var btn=document.getElementById("csb"+rid);
+  if(btn){btn.disabled=true;btn.innerHTML='<span class="sp2"></span>';}
+  var senderName=curUser.email.split("@")[0];
+  var senderType=curRole==="staff"?"staff":"client";
+  var now=new Date().toISOString();
+  var newMsg={sender:senderType,sender_name:senderName,text:txt,ts:now};
+  sb.from("service_requests").select("messages").eq("id",rid).then(function(r){
+    if(r.error)throw r.error;
+    var existing=[];try{existing=JSON.parse(r.data[0].messages||"[]");}catch(e){}
+    existing.push(newMsg);
+    return sb.from("service_requests").update({messages:JSON.stringify(existing),status:"active",updated_at:now}).eq("id",rid).select();
+  }).then(function(r){
+    if(r.error)throw r.error;
+    ta.value="";ta.style.height="40px";
+    if(btn){btn.disabled=false;btn.textContent="➤";}
+    if(curRole==="staff"){loadAllReqs();}else{loadClientReqs();}
+  }).catch(function(e){
+    alert("Hitilafu: "+e.message);
+    if(btn){btn.disabled=false;btn.textContent="➤";}
+  });
+}
+
+// ── LOAD CLIENT REQUESTS ──
+function loadClientReqs(){
+  if(!curUser)return;
+  var email=curUser.email.toLowerCase().trim();
+  sb.from("service_requests").select("*").eq("client_email",email).order("updated_at",{ascending:false})
+  .then(function(r){
+    if(r.error)throw r.error;
+    var reqs=r.data||[];
+    document.getElementById("creqc").textContent=reqs.length;
+    var replied=reqs.filter(function(x){
+      var msgs=[];try{msgs=JSON.parse(x.messages||"[]");}catch(e){}
+      return msgs.some(function(m){return m.sender==="staff";});
+    }).length;
+    document.getElementById("crplc").textContent=replied;
+    var el=document.getElementById("creqlst");
+    if(!reqs.length){el.innerHTML='<div class="empty"><div class="emi">💬</div><div class="emt">Bado haujatuma ombi lolote.<br>Nenda kwenye <b>⚡ Huduma</b> uchague!</div></div>';return;}
+    var openChats=getOpenChats(reqs);
+    el.innerHTML=reqs.map(function(r2){return renderChatCard(r2,false);}).join('');
+    restoreOpenChats(openChats);
+  }).catch(function(e){console.error(e.message);});
+}
+
+// ── LOAD STAFF REQUESTS ──
+function loadAllReqs(){
+  loadStaffList();
+  sb.from("service_requests").select("*").order("updated_at",{ascending:false})
+  .then(function(r){
+    if(r.error)throw r.error;
+    allReqs=r.data||[];
+    document.getElementById("stotc").textContent=allReqs.length;
+    var pending=allReqs.filter(function(x){
+      var msgs=[];try{msgs=JSON.parse(x.messages||"[]");}catch(e){}
+      var last=msgs[msgs.length-1];
+      return !last||(last.sender==="client"||last.sender==="auto");
+    }).length;
+    document.getElementById("spendc").textContent=pending;
+    document.getElementById("sdonec").textContent=allReqs.length-pending;
+    var openChats=getOpenChats(allReqs);
+    var el=document.getElementById("sreqlst");
+    if(!allReqs.length){el.innerHTML='<div class="empty"><div class="emi">📭</div><div class="emt">Hakuna maombi bado.</div></div>';return;}
+    el.innerHTML=allReqs.map(function(r){return renderChatCard(r,true);}).join('');
+    restoreOpenChats(openChats);
+  }).catch(function(e){console.error(e.message);});
+}
+
+function getOpenChats(reqs){
+  var open={};
+  reqs.forEach(function(r){var cm=document.getElementById("cm"+r.id);if(cm&&cm.style.display!=="none")open[r.id]=true;});
+  return open;
+}
+function restoreOpenChats(open){
+  Object.keys(open).forEach(function(rid){
+    var cm=document.getElementById("cm"+rid);
+    if(cm){cm.style.display="block";
+      var hd=document.getElementById("ch"+rid);if(hd)hd.classList.add("open");
+      var msgs=document.getElementById("msgs"+rid);if(msgs)msgs.scrollTop=msgs.scrollHeight;
+    }
+  });
+}
+
+// ── REALTIME ──
+var clientCh=null,staffCh=null;
+function startClientRT(){
+  if(clientCh)clientCh.unsubscribe();
+  clientCh=sb.channel("c-"+curUser.id)
+    .on("postgres_changes",{event:"UPDATE",schema:"public",table:"service_requests",filter:"client_email=eq."+curUser.email.toLowerCase()},
+    function(){loadClientReqs();}).subscribe();
+}
+function startStaffRT(){
+  if(staffCh)staffCh.unsubscribe();
+  staffCh=sb.channel("staff-ch")
+    .on("postgres_changes",{event:"*",schema:"public",table:"service_requests"},
+    function(){loadAllReqs();}).subscribe();
+}
+
+// ── ADMIN ──
+function addStaff(){
+  var email=document.getElementById("nse").value.trim().toLowerCase();
+  var name=document.getElementById("nsn").value.trim();
+  var role=document.getElementById("nsr").value;
+  var al=document.getElementById("admalrt");var btn=document.getElementById("badds");
+  if(!email||!name){al.textContent="Jaza barua pepe na jina.";al.className="al on err";return;}
+  btn.disabled=true;btn.innerHTML='<span class="sp"></span> Inaongeza...';al.className="al";
+  sb.from("staff_members").select("id").eq("email",email).then(function(r){
+    if(r.data&&r.data.length){al.textContent="Mtoa huduma huyu tayari yupo.";al.className="al on err";btn.disabled=false;btn.textContent="Ongeza Mtoa Huduma";return;}
+    return sb.from("staff_members").insert([{email:email,name:name,role:role,added_by:curUser.email,created_at:new Date().toISOString()}])
+    .then(function(r2){
+      if(r2.error)throw r2.error;
+      if(!STAFF_EMAILS.includes(email))STAFF_EMAILS.push(email);
+      al.textContent=name+" ameongezwa vizuri!";al.className="al on ok";
+      document.getElementById("nse").value="";document.getElementById("nsn").value="";
+      loadStaffList();btn.disabled=false;btn.textContent="Ongeza Mtoa Huduma";
+    });
+  }).catch(function(e){al.textContent="Hitilafu: "+e.message;al.className="al on err";btn.disabled=false;btn.textContent="Ongeza Mtoa Huduma";});
+}
+function loadStaffList(){
+  var el=document.getElementById("stlst");if(!el)return;
+  sb.from("staff_members").select("*").order("created_at",{ascending:false}).then(function(r){
+    if(r.error)throw r.error;
+    var list=r.data||[];
+    if(!list.length){el.innerHTML='<div class="empty"><div class="emi">👥</div><div class="emt">Bado haujasajili mtoa huduma yeyote.</div></div>';return;}
+    el.innerHTML=list.map(function(s){
+      return '<div class="stcard"><div class="stleft"><div class="stav">'+s.name.slice(0,2).toUpperCase()+'</div>'
+        +'<div><div class="stname">'+s.name+'</div><div class="stemail">'+s.email+'</div>'
+        +'<div class="strole">'+(RLABELS[s.role]||s.role)+'</div></div></div>'
+        +'<button class="brem" type="button" onclick="removeStaff(\''+s.id+'\',\''+s.email+'\',\''+s.name+'\')">Ondoa</button>'
+        +'</div>';
+    }).join('');
+  }).catch(function(){});
+}
+function removeStaff(id,email,name){
+  if(!confirm("Uhakika unataka kumwondoa "+name+"?"))return;
+  sb.from("staff_members").delete().eq("id",id).then(function(r){
+    if(r.error)throw r.error;
+    STAFF_EMAILS=STAFF_EMAILS.filter(function(e){return e!==email;});
+    loadStaffList();
+  }).catch(function(e){alert("Hitilafu: "+e.message);});
+}
+
+// ── PWA ──
+var dPmt=null;
+function initPWA(){
+  window.addEventListener("beforeinstallprompt",function(e){
+    e.preventDefault();dPmt=e;
+    if(!window.matchMedia("(display-mode: standalone)").matches&&!localStorage.getItem("pwa_ok")){
+      setTimeout(function(){document.getElementById("pwab").classList.add("on");},4000);
+    }
+  });
+  window.addEventListener("appinstalled",function(){dPmt=null;document.getElementById("pwab").classList.remove("on");});
+  var hn=window.location.hostname;
+  if("serviceWorker"in navigator&&hn!=="localhost"&&hn.indexOf("claude")===-1){
+    window.addEventListener("load",function(){navigator.serviceWorker.register("sw.js").catch(function(){});});
+  }
+}
+function instPWA(){
+  if(dPmt){dPmt.prompt();dPmt.userChoice.then(function(){dPmt=null;document.getElementById("pwab").classList.remove("on");});}
+  else{alert("Ili kuweka app kwenye simu:\n\niPhone: Bonyeza Share chini, kisha 'Add to Home Screen'\n\nAndroid: Bonyeza menu kona ya juu, kisha 'Install App' au 'Add to Home Screen'");}
+}
+function dismPWA(){document.getElementById("pwab").classList.remove("on");localStorage.setItem("pwa_ok","1");}
+
+// ── AUTO-LOGOUT (60 seconds) ──
+var autoLogoutTimer = null;
+var warningTimer = null;
+var warningCountdown = null;
+var lastActivity = Date.now();
+var WARNING_AT = 30; // show warning at 30 seconds remaining
+var LOGOUT_AT = 60; // logout after 60 seconds of inactivity
+
+function resetActivityTimer() {
+  lastActivity = Date.now();
+  // Hide warning if showing
+  var warn = document.getElementById("logout-warning");
+  if (warn && warn.classList.contains("show")) {
+    warn.classList.remove("show");
+    if (warningCountdown) clearInterval(warningCountdown);
+  }
+}
+
+function startAutoLogout() {
+  if (autoLogoutTimer) clearInterval(autoLogoutTimer);
+  lastActivity = Date.now();
+
+  // Track user activity
+  ["click","touchstart","keydown","scroll"].forEach(function(evt) {
+    document.addEventListener(evt, resetActivityTimer, {passive:true});
+  });
+
+  autoLogoutTimer = setInterval(function() {
+    var elapsed = Math.floor((Date.now() - lastActivity) / 1000);
+    var remaining = LOGOUT_AT - elapsed;
+
+    if (remaining <= 0) {
+      // LOGOUT NOW
+      clearInterval(autoLogoutTimer);
+      if (warningCountdown) clearInterval(warningCountdown);
+      var warn = document.getElementById("logout-warning");
+      if (warn) warn.classList.remove("show");
+      doLogout();
+      return;
+    }
+
+    if (remaining <= WARNING_AT) {
+      // Show warning
+      var warn = document.getElementById("logout-warning");
+      if (warn && !warn.classList.contains("show")) {
+        warn.classList.add("show");
+        startWarningCountdown(remaining);
+      }
+    }
+  }, 1000);
+}
+
+function startWarningCountdown(secs) {
+  if (warningCountdown) clearInterval(warningCountdown);
+  var count = secs;
+  var el = document.getElementById("lw-count");
+  if (el) el.textContent = count;
+  warningCountdown = setInterval(function() {
+    count--;
+    if (el) el.textContent = count;
+    if (count <= 0) clearInterval(warningCountdown);
+  }, 1000);
+}
+
+function stayLoggedIn() {
+  resetActivityTimer();
+  var warn = document.getElementById("logout-warning");
+  if (warn) warn.classList.remove("show");
+  if (warningCountdown) clearInterval(warningCountdown);
+}
+
+function stopAutoLogout() {
+  if (autoLogoutTimer) { clearInterval(autoLogoutTimer); autoLogoutTimer = null; }
+  if (warningCountdown) { clearInterval(warningCountdown); warningCountdown = null; }
+  var warn = document.getElementById("logout-warning");
+  if (warn) warn.classList.remove("show");
+  ["click","touchstart","keydown","scroll"].forEach(function(evt) {
+    document.removeEventListener(evt, resetActivityTimer);
+  });
+}
+
+// ── NIGHT MODE ──
+var isNightMode = false;
+
+function checkNightMode() {
+  var hour = new Date().getHours();
+  var shouldBeNight = hour >= 19 || hour < 6; // 7pm to 6am
+  var saved = localStorage.getItem("nebrin_night");
+
+  // Auto-enable at night if not manually set
+  if (saved === null) {
+    if (shouldBeNight) {
+      enableNightMode(false);
+    }
+  } else {
+    if (saved === "1") enableNightMode(false);
+  }
+
+  // Check every minute
+  setTimeout(checkNightMode, 60000);
+}
+
+function enableNightMode(save) {
+  isNightMode = true;
+  document.body.classList.add("night-mode");
+  var btn = document.getElementById("night-toggle");
+  if (btn) btn.textContent = "☀️";
+  if (save !== false) localStorage.setItem("nebrin_night", "1");
+}
+
+function disableNightMode() {
+  isNightMode = false;
+  document.body.classList.remove("night-mode");
+  var btn = document.getElementById("night-toggle");
+  if (btn) btn.textContent = "🌙";
+  localStorage.setItem("nebrin_night", "0");
+}
+
+function toggleNightMode() {
+  if (isNightMode) { disableNightMode(); }
+  else { enableNightMode(); }
+}
+
+function showNightToggle(show) {
+  var btn = document.getElementById("night-toggle");
+  if (btn) btn.style.display = show ? "flex" : "none";
+}
+
+function togPwd(){var i=document.getElementById("pwd");var b=document.querySelector(".ebtn");i.type=i.type==="password"?"text":"password";b.textContent=i.type==="password"?"👁":"🙈";}
+function showAlert(msg,type){var b=document.getElementById("alrt");b.textContent=msg;b.className="al on "+type;}
+function clrAlert(){var b=document.getElementById("alrt");b.className="al";b.textContent="";}
+</script>
+</body>
+</html>
