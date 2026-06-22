@@ -1,7 +1,7 @@
 {
   "name": "NEBRIN Online Service Company",
   "short_name": "NEBRIN",
-  "description": "Huduma za Kidigitali Tanzania — Uundaji wa Tovuti, Graphics, CCTV, NIDA, Vyeti, Lipa Namba",
+  "description": "Huduma za Kidigitali Tanzania — Mbeya City",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
@@ -9,8 +9,7 @@
   "theme_color": "#e8b84b",
   "orientation": "portrait-primary",
   "lang": "sw",
-  "dir": "ltr",
-  "categories": ["business", "productivity", "utilities"],
+  "categories": ["business", "utilities"],
   "icons": [
     {
       "src": "icon-192.png",
@@ -25,28 +24,16 @@
       "purpose": "any maskable"
     }
   ],
-  "screenshots": [
-    {
-      "src": "screenshot1.png",
-      "sizes": "390x844",
-      "type": "image/png",
-      "label": "NEBRIN Login Page"
-    }
-  ],
   "shortcuts": [
     {
-      "name": "Angalia Huduma",
-      "short_name": "Huduma",
-      "description": "Angalia huduma zetu zote",
-      "url": "/?tab=services"
+      "name": "Ingia",
+      "url": "/",
+      "description": "Ingia kwenye NEBRIN"
     },
     {
-      "name": "Wasiliana Nasi",
-      "short_name": "Wasiliana",
-      "description": "Tuma ombi la huduma",
-      "url": "/?action=contact"
+      "name": "Huduma Zetu",
+      "url": "/huduma.html",
+      "description": "Angalia huduma zetu"
     }
-  ],
-  "related_applications": [],
-  "prefer_related_applications": false
+  ]
 }
