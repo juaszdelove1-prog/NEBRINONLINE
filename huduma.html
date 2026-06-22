@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEBRIN — Huduma Zetu</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700;9..144,900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1B140F;
+    --paper: #FBF6EF;
+    --paper-raised: #FFFFFF;
+    --brown: #5C2A0E;
+    --brown-deep: #3D1B09;
+    --orange: #E8650A;
+    --orange-soft: #FCE4D2;
+    --gold: #B8862F;
+    --line: rgba(27,20,15,0.14);
+    --muted: #6B6055;
+    --green: #2D7D46;
+    --green-soft: #E3F3E7;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    min-height: 100vh;
+  }
+
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-thumb { background: var(--line); border-radius: 10px; }
+
+  /* ============================================ */
+  /* GATE SCREEN (Mlango wa Kuingia)               */
+  /* ============================================ */
+  #gateScreen {
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    background: linear-gradient(160deg, var(--brown-deep) 0%, var(--brown) 55%, #6B3414 100%);
+    color: white;
+    position: relative;
+    overflow: hidden;
+    padding: 7vh 6vw;
+  }
+  #gateScreen::after {
+    content: '';
+    position: absolute;
+    width: 420px; height: 420px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.07);
+    right: -140px; top: -180px;
+  }
+  #gateScreen::before {
+    content: '';
+    position: absolute;
+    width: 280px; height: 280px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.05);
+    left: -100px; bottom: -120px;
+  }
+
+  .gate-logo {
+    display: flex; align-items: center; gap: 12px;
+    position: relative; z-index: 1;
+    margin-bottom: auto;
+  }
+  .gate-logo img {
+    height: 46px; width: 46px;
+    background: white; border-radius: 11px; padding: 4px;
+    object-fit: contain;
+  }
+  .gate-logo .word {
+    font-family: 'Fraunces', serif; font-weight: 700; font-size: 20px;
+  }
+  .gate-logo .word span { color: #F5A35C; }
+
+  .gate-center {
+    position: relative; z-index: 1;
+    margin: 8vh 0 6vh;
+    max-width: 640px;
+  }
+  .gate-eyebrow {
+    font-size: 12px; letter-spacing: 2px; text-transform: uppercase;
+    color: #F5A35C; font-weight: 700; margin-bottom: 16px;
+  }
+  .gate-center h1 {
+    font-family: 'Fraunces', serif; font-weight: 900;
+    font-size: clamp(28px, 6.5vw, 48px);
+    line-height: 1.1;
+    margin-bottom: 16px;
+  }
+  .gate-center h1 em { font-style: italic; font-weight: 500; color: #F5A35C; }
+  .gate-center p {
+    color: rgba(255,255,255,0.72);
+    font-size: 16px; line-height: 1.65;
+    max-width: 480px;
+  }
+
+  .gate-cards {
+    position: relative; z-index: 1;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+  @media (min-width: 720px) {
+    .gate-cards { grid-template-columns: 1fr 1fr; }
+  }
+
+  .gate-card {
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.16);
+    backdrop-filter: blur(8px);
+    border-radius: 18px;
+    padding: 26px 24px;
+    cursor: pointer;
+    transition: all 0.25s;
+    text-align: left;
+    position: relative;
+    overflow: hidden;
+  }
+  .gate-card:hover {
+    background: rgba(255,255,255,0.12);
+    border-color: var(--orange);
+    transform: translateY(-3px);
+  }
+  .gate-card .gc-icon {
+    font-size: 30px; margin-bottom: 14px; display: block;
+  }
+  .gate-card h3 {
+    font-family: 'Fraunces', serif; font-weight: 700; font-size: 20px;
+    margin-bottom: 8px;
+  }
+  .gate-card p {
+    color: rgba(255,255,255,0.65); font-size: 13.5px; line-height: 1.55;
+    margin-bottom: 16px;
+  }
+  .gate-card .gc-arrow {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 12.5px; font-weight: 700; color: #F5A35C;
+  }
+  .gate-card.alt {
+    background: rgba(232,101,10,0.14);
+    border-color: rgba(232,101,10,0.4);
+  }
+  .gate-card.alt:hover { background: rgba(232,101,10,0.22); }
+
+  .gate-skip {
+    position: relative; z-index: 1;
+    text-align: center;
+    margin-top: 22px;
+    font-size: 13px;
+    color: rgba(255,255,255,0.45);
+  }
+  .gate-skip a { color: rgba(255,255,255,0.7); text-decoration: underline; cursor: pointer; }
+
+  /* ============================================ */
+  /* MAIN APP (Index ya Huduma)                    */
+  /* ============================================ */
+  #appScreen { display: none; min-height: 100vh; padding-bottom: 60px; }
+  #appScreen.show { display: block; }
+
+  .topbar {
+    background: var(--brown-deep);
+    color: white;
+    padding: 14px 6vw;
+    display: flex; align-items: center; justify-content: space-between;
+    position: sticky; top: 0; z-index: 30;
+  }
+  .topbar .back-btn {
+    display: flex; align-items: center; gap: 8px;
+    background: rgba(255,255,255,0.1);
+    border: none; color: white;
+    padding: 8px 13px; border-radius: 9px;
+    font-family: 'Inter', sans-serif; font-size: 12.5px; font-weight: 600;
+    cursor: pointer;
+  }
+  .topbar .topbar-logo { display: flex; align-items: center; gap: 8px; }
+  .topbar .topbar-logo img { height: 28px; width: 28px; background: white; border-radius: 7px; padding: 2px; }
+  .topbar .topbar-logo .word { font-family: 'Fraunces', serif; font-weight: 700; font-size: 15px; }
+  .topbar .topbar-logo .word span { color: #F5A35C; }
+  .topbar .mode-pill {
+    font-size: 10.5px; font-weight: 700; letter-spacing: 0.4px;
+    background: var(--orange); padding: 4px 10px; border-radius: 100px;
+  }
+
+  header.hero {
+    background: linear-gradient(160deg, var(--brown-deep) 0%, var(--brown) 65%, #6B3414 100%);
+    color: white;
+    padding: 30px 6vw 40px;
+    position: relative; overflow: hidden;
+  }
+  header.hero::after {
+    content: ''; position: absolute; width: 320px; height: 320px; border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.08); right: -110px; top: -150px;
+  }
+  header.hero h1 {
+    position: relative; z-index: 1;
+    font-family: 'Fraunces', serif; font-weight: 900;
+    font-size: clamp(24px, 5.5vw, 38px); line-height: 1.12; max-width: 600px; margin-bottom: 12px;
+  }
+  header.hero h1 em { font-style: italic; font-weight: 500; color: #F5A35C; }
+  header.hero p.lede {
+    position: relative; z-index: 1; max-width: 500px;
+    color: rgba(255,255,255,0.75); font-size: 14.5px; line-height: 1.6;
+  }
+
+  .control-bar {
+    background: var(--paper-raised);
+    margin: -22px 6vw 0; position: relative; z-index: 2;
+    border-radius: 16px; box-shadow: 0 14px 34px rgba(61,27,9,0.16);
+    padding: 18px; border: 1px solid var(--line);
+  }
+  .search-row {
+    display: flex; align-items: center; gap: 10px;
+    background: var(--paper); border: 1px solid var(--line);
+    border-radius: 11px; padding: 11px 14px; margin-bottom: 14px;
+  }
+  .search-row svg { flex-shrink: 0; opacity: 0.5; }
+  .search-row input {
+    border: none; outline: none; background: transparent;
+    font-family: 'Inter', sans-serif; font-size: 15px; color: var(--ink); width: 100%;
+  }
+  .search-row input::placeholder { color: var(--muted); }
+  .filter-row { display: flex; gap: 8px; flex-wrap: wrap; }
+  .filter-btn {
+    font-family: 'Inter', sans-serif; font-size: 12.5px; font-weight: 600;
+    padding: 7px 14px; border-radius: 100px; border: 1px solid var(--line);
+    background: var(--paper); color: var(--ink); cursor: pointer; transition: all 0.2s; white-space: nowrap;
+  }
+  .filter-btn:hover { border-color: var(--orange); }
+  .filter-btn.active { background: var(--brown); border-color: var(--brown); color: white; }
+
+  main { max-width: 1100px; margin: 0 auto; padding: 26px 6vw 0; }
+
+  .section-label {
+    font-family: 'Fraunces', serif; font-weight: 700; font-style: italic;
+    color: var(--brown); font-size: 17px; margin: 24px 0 13px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .section-label::after { content: ''; flex: 1; height: 1px; background: var(--line); }
+
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(258px, 1fr)); gap: 14px; }
+
+  .card {
+    background: var(--paper-raised); border: 1px solid var(--line); border-radius: 14px;
+    padding: 18px; cursor: pointer; transition: all 0.25s; position: relative; overflow: hidden;
+  }
+  .card:hover { border-color: var(--orange); transform: translateY(-3px); box-shadow: 0 12px 26px rgba(61,27,9,0.12); }
+  .card .top-row { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
+  .card .ic { font-size: 25px; }
+  .card .speed-tag {
+    font-size: 9.5px; font-weight: 700; letter-spacing: 0.3px;
+    padding: 3px 8px; border-radius: 100px; white-space: nowrap;
+  }
+  .card .speed-tag.fast { background: var(--green-soft); color: var(--green); }
+  .card .speed-tag.consult { background: var(--orange-soft); color: var(--brown); }
+  .card h3 { font-family: 'Inter', sans-serif; font-weight: 700; font-size: 15px; color: var(--ink); line-height: 1.35; margin-bottom: 6px; }
+  .card .tag {
+    display: inline-block; font-size: 10.5px; font-weight: 600; letter-spacing: 0.3px;
+    color: var(--brown); background: var(--orange-soft); padding: 3px 9px; border-radius: 100px;
+  }
+  .card .arrow {
+    position: absolute; top: 16px; right: 16px; width: 26px; height: 26px; border-radius: 50%;
+    border: 1px solid var(--line); display: flex; align-items: center; justify-content: center;
+    color: var(--muted); font-size: 13px; transition: all 0.25s;
+  }
+  .card:hover .arrow { background: var(--orange); border-color: var(--orange); color: white; transform: rotate(45deg); }
+
+  .empty-state { text-align: center; padding: 60px 20px; color: var(--muted); display: none; }
+  .empty-state.show { display: block; }
+  .empty-state .ic { font-size: 40px; margin-bottom: 12px; display: block; }
+
+  /* ===== MODAL ===== */
+  .overlay {
+    position: fixed; inset: 0; background: rgba(27,20,15,0.55); backdrop-filter: blur(3px);
+    z-index: 50; display: none; align-items: flex-end; justify-content: center;
+  }
+  .overlay.show { display: flex; }
+  @media (min-width: 640px) { .overlay { align-items: center; } }
+
+  .modal {
+    background: var(--paper-raised); width: 100%; max-width: 480px;
+    border-radius: 20px 20px 0 0; padding: 28px 26px 26px;
+    transform: translateY(40px); opacity: 0; transition: all 0.3s ease;
+    max-height: 86vh; overflow-y: auto;
+  }
+  @media (min-width: 640px) { .modal { border-radius: 20px; margin: 20px; } }
+  .overlay.show .modal { transform: translateY(0); opacity: 1; }
+
+  .modal-close {
+    width: 30px; height: 30px; border-radius: 50%; background: var(--paper); border: 1px solid var(--line);
+    display: flex; align-items: center; justify-content: center; cursor: pointer; float: right; font-size: 14px; color: var(--muted);
+  }
+  .modal .ic-big { font-size: 38px; margin-bottom: 14px; }
+  .modal h2 { font-family: 'Fraunces', serif; font-weight: 700; font-size: 22px; color: var(--ink); line-height: 1.3; margin-bottom: 10px; clear: both; }
+  .modal .tag-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+  .modal .tag { display: inline-block; font-size: 11px; font-weight: 600; color: var(--brown); background: var(--orange-soft); padding: 4px 10px; border-radius: 100px; }
+  .modal .speed-tag { font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 100px; }
+  .modal .speed-tag.fast { background: var(--green-soft); color: var(--green); }
+  .modal .speed-tag.consult { background: var(--orange-soft); color: var(--brown); }
+  .modal p.desc { color: var(--muted); font-size: 14.5px; line-height: 1.7; margin-bottom: 20px; }
+  .modal .req-box { background: var(--paper); border-radius: 12px; padding: 14px 16px; margin-bottom: 20px; }
+  .modal .req-box .req-title { font-size: 11.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--brown); margin-bottom: 8px; }
+  .modal .req-box ul { list-style: none; }
+  .modal .req-box li { font-size: 13.5px; color: var(--ink); padding: 4px 0 4px 18px; position: relative; line-height: 1.5; }
+  .modal .req-box li::before { content: '✓'; position: absolute; left: 0; color: var(--orange); font-weight: 700; }
+
+  .modal .cta-row { display: flex; gap: 10px; }
+  .modal .cta {
+    flex: 1; text-align: center; padding: 13px 14px; border-radius: 11px;
+    font-family: 'Inter', sans-serif; font-weight: 700; font-size: 13.5px;
+    text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 7px;
+  }
+  .modal .cta.primary { background: var(--orange); color: white; }
+  .modal .cta.secondary { background: var(--paper); color: var(--ink); border: 1px solid var(--line); }
+
+  /* ===== FOOTER ===== */
+  .contact-band { max-width: 1100px; margin: 50px auto 0; padding: 0 6vw; }
+  .contact-card {
+    background: linear-gradient(135deg, var(--brown-deep), var(--brown));
+    border-radius: 18px; padding: 28px 26px; color: white; text-align: center;
+  }
+  .contact-card h3 { font-family: 'Fraunces', serif; font-weight: 700; font-size: 20px; margin-bottom: 8px; }
+  .contact-card p { color: rgba(255,255,255,0.7); font-size: 13.5px; margin-bottom: 18px; }
+  .contact-grid { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+  .contact-grid a {
+    display: flex; align-items: center; gap: 8px;
+    background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+    padding: 10px 16px; border-radius: 11px; color: white; text-decoration: none; font-size: 13px; font-weight: 600;
+  }
+  .contact-grid a:hover { background: var(--orange); border-color: var(--orange); }
+</style>
+</head>
+<body>
+
+<!-- ============== GATE SCREEN ============== -->
+<div id="gateScreen">
+  <div class="gate-logo">
+    <img id="gateLogoImg" alt="NEBRIN">
+    <div class="word">NEB<span>RIN</span></div>
+  </div>
+
+  <div class="gate-center">
+    <div class="gate-eyebrow">Karibu NEBRIN</div>
+    <h1>Tuambie <em>unachohitaji</em>, tukuelekeze haraka.</h1>
+    <p>Chagua mojawapo hapa chini ili tukuonyeshe huduma zinazokufaa zaidi — bila kupoteza muda kutafuta.</p>
+  </div>
+
+  <div class="gate-cards">
+    <div class="gate-card" onclick="enterApp('quick')">
+      <span class="gc-icon">⚡</span>
+      <h3>Nahitaji Huduma Moja, Haraka</h3>
+      <p>Vyeti, TIN, Lipa Number, laini za uwakala, na huduma nyingine za kawaida za kila siku.</p>
+      <span class="gc-arrow">Endelea →</span>
+    </div>
+    <div class="gate-card alt" onclick="enterApp('pro')">
+      <span class="gc-icon">💼</span>
+      <h3>Nina Mahitaji ya Kibiashara</h3>
+      <p>Usajili wa kampuni, MEMARTS, ushauri wa kisheria, tovuti, na huduma za kitaalamu zaidi.</p>
+      <span class="gc-arrow">Endelea →</span>
+    </div>
+  </div>
+
+  <div class="gate-skip">Sijui ni ipi — <a onclick="enterApp('all')">nionyeshe zote</a></div>
+</div>
+
+<!-- ============== APP SCREEN ============== -->
+<div id="appScreen">
+
+  <div class="topbar">
+    <div class="topbar-logo">
+      <img id="topbarLogoImg" alt="NEBRIN">
+      <div class="word">NEB<span>RIN</span></div>
+    </div>
+    <div style="display:flex; align-items:center; gap:8px;">
+      <span class="mode-pill" id="modePill">Zote</span>
+      <button class="back-btn" onclick="goToGate()">← Rudi</button>
+    </div>
+  </div>
+
+  <header class="hero">
+    <h1 id="heroTitle">Huduma <em>21</em> mahali pamoja.</h1>
+    <p class="lede" id="heroLede">Bonyeza huduma yoyote hapa chini kuona maelezo na vitu unavyohitaji, kisha wasiliana nasi moja kwa moja.</p>
+  </header>
+
+  <div class="control-bar">
+    <div class="search-row">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+      <input id="searchInput" type="text" placeholder="Tafuta huduma — mfano: vyeti, mkopo, tovuti...">
+    </div>
+    <div class="filter-row" id="filterRow"></div>
+  </div>
+
+  <main>
+    <div id="gridContainer"></div>
+    <div class="empty-state" id="emptyState">
+      <span class="ic">🔍</span>
+      <p>Hakuna huduma iliyopatikana. Jaribu neno lingine au wasiliana nasi moja kwa moja.</p>
+    </div>
+  </main>
+
+  <div class="contact-band">
+    <div class="contact-card">
+      <h3>Hukuiona huduma unayohitaji?</h3>
+      <p>Tuandikie — tunaweza kukusaidia hata kama haipo kwenye orodha.</p>
+      <div class="contact-grid">
+        <a href="https://wa.me/255742479785" target="_blank">💬 WhatsApp: 0742 479 785</a>
+        <a href="tel:+255742479785">📞 Piga Simu</a>
+        <a href="mailto:nebrinonline@gmail.com">📧 Barua Pepe</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="overlay" id="overlay">
+  <div class="modal" id="modalBody"></div>
+</div>
+
+<script>
+const LOGO_B64 = "iVBORw0KGgoAAAANSUhEUgAAA+gAAAPoCAYAAABNo9TkAAEAAElEQVR4nOz96ZNk153m+X3PuZtvEZGRO3Yk9i2xkgQJrsWlWKyla1ota02re2xs9GZMb2R6I1mb9AeMyWxk0gu9kOlFa1rSaEaaqa5WVXVVNYtLcS2SIPZ9SawJIBO5xOrudzvn6MW97uEeGZkAkcmCg3g+tKCHe/hy73WPSDz3nPP7mRNPvIGIiIiIiIiIfLzsx70BIiIiIiIiIqKALiIiIiIiIrIQFNBFREREREREFoACuoiIiIiIiMgCUEAXERERERERWQAK6CIiIiIiIiILQAFdREREREREZAEooIuIiIiIiIgsAAV0ERERERERkQWggC4iIiIiIiKyABTQRURERERERBaAArqIiIiIiIjIAlBAFxEREREREVkACugiIiIiIiIiC0ABXURERERERGQBKKCLiIiIiIiILAAFdBEREREREZEFoIAuIiIiIiIisgAU0EVEREREREQWgAK6iIiIiIiIyAJQQBcRERERERFZAAroIiIiIiIiIgtAAV1ERERERERkASigi4iIiIiIiCwABXQRERERERGRBaCALiIiIiIiIrIAFNBFREREREREFoACuoiIiIiIiMgCUEAXERERERERWQAK6CIiIiIiIiILQAFdREREREREZAEooIuIiIiIiIgsAAV0ERERERERkQWggC4iIiIiIiKyABTQRURERERERBaAArqIiIiIiIjIAlBAFxEREREREVkACugiIiIiIiIiC0ABXURERERERGQBKKCLiIiIiIiILAAFdBEREREREZEFoIAuIiIiIiIisgAU0EVEREREREQWgAK6iIiIiIiIyAJQQBcRERERERFZAAroIiIiIiIiIgtAAV1ERERERERkASigi4iIiIiIiCwABXQRERERERGRBaCALiIiIiIiIrIAFNBFREREREREFoACuoiIiIiIiMgCUEAXERERERERWQAK6CIiIiIiIiILQAFdREREREREZAEooIuIiIiIiIgsAAV0ERERERERkQWggC4iIiIiIiKyABTQRURERERERBaAArqIiIiIiIjIAlBAFxEREREREVkACugiIiIiIiIiC0ABXURERERERGQBKKCLiIiIiIiILAAFdBEREREREZEFoIAuIiIiIiIisgAU0EVEREREREQWgAK6iIiIiIiIyAJQQBcRERERERFZAAroIiIiIiIiIgtAAV1ERERERERkASigi4iIiIiIiCwABXQRERERERGRBaCALiIiIiIiIrIAFNBFREREREREFoACuoiIiIiIiMgCUEAXERERERERWQAK6CIiIiIiIiILQAFdREREREREZAEooIuIiIiIiIgsAAV0ERERERERkQWggC4iIiIiIiKyABTQRURERERERBaAArqIiIiIiIjIAlBAFxEREREREVkACugiIiIiIiIiC0ABXURERERERGQBKKCLiIiIiIiILAAFdBEREREREZEFoIAuIiIiIiIisgAU0EVEREREREQWgAK6iIiIiIiIyAJQQBcRERERERFZAAroIiIiIiIiIgtAAV1ERERERERkASigi4iIiIiIiCwABXQRERERERGRBaCALiIiIiIiIrIAFNBFREREREREFoACuoiIiIiIiMgCUEAXERERERERWQAK6CIiIiIiIiILQAFdREREREREZAEooIuIiIiIiIgsAAV0ERERERERkQWggC4iIiIiIiKyABTQRURERERERBaAArqIiIiIiIjIAlBAFxEREREREVkACugiIiIiIiIiC0ABXURERERERGQBKKCLiIiIiIiILAAFdBEREREREZEFoIAuIiIiIiIisgAU0EVEREREREQWgAK6iIiIiIiIyAJQQBcRERERERFZAAroIiIiIiIiIgtAAV1ERERERERkASigi4iIiIiIiCwABXQRERERERGRBaCALiIiIiIiIrIAFNBFREREREREFoACuoiIiIiIiMgCUEAXERERERERWQAK6CIiIiIiIiILQAFdREREREREZAEooIuIiIiIiIgsAAV0ERERERERkQWggC4iIiIiIiKyABTQRURERERERBaAArqIiIiIiIjIAlBAFxEREREREVkACugiIiIiIiIiC0ABXURERERERGQBKKCLiIiIiIiILAAFdBEREREREZEFoIAuIiIiIiIisgAU0EVEREREREQWgAK6iIiIiIiIyAJQQBcRERERERFZAAroIiIiIiIiIgtAAV1ERERERERkASigi4iIiIiIiCwABXQRERERERGRBaCALiIiIiIiIrIAFNBFREREREREFoACuoiIiIiIiMgCUEAXERERERERWQAK6CIiIiIiIiILQAFdREREREREZAEooIuIiIiIiIgsAAV0ERERERERkQWggC4iIiIiIiKyABTQRURERERERBaAArqIiIiIiIjIAlBAFxEREREREVkACugiIiIiIiIiC0ABXURERERERGQBKKCLiIiIiIiILAAFdBEREREREZEFoIAuIiIiIiIisgAU0EVEREREREQWgAK6iIiIiIiIyAJQQBcRERERERFZAAroIiIiIiIiIgtAAV1ERERERERkASigi4iIiIiIiCwABXQRERERERGRBaCALiIiIiIiIrIAFNBFREREREREFoACuoiIiIiIiMgCUEAXERERERERWQAK6CIiIiIiIiILQAFdREREREREZAEooIuIiIiIiIgsAAV0ERERERERkQWggC4iIiIiIiKyABTQRURERERERBaAArqIiIiIiIjIAlBAFxEREREREVkACugiIiIiIiIiC0ABXURERERERGQBKKCLiIiIiIiILAAFdBEREREREZEFoIAuIiIiIiIisgAU0EVEREREREQWgAK6iIiIiIiIyAJQQBcRERERERFZAAroIiIiIiIiIgtAAV1ERERERERkASigi4iIiIiIiCwABXQRERERERGRBaCALiIiIiIiIrIAFNBFREREREREFoACuoiIiIiIiMgCUEAXERERERERWQAK6CIiIiIiIiILQAFdREREREREZAEooIuIiIiIiIgsAAV0ERERERERkQWggC4iIiIiIiKyABTQRURERERERBaAArqIiIiIiIjIAlBAFxEREREREVkACugiIiIiIiIiC0ABXURERERERGQBKKCLiIiIiIiILAAFdBEREREREZEFoIAuI
