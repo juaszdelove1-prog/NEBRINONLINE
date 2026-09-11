@@ -1,0 +1,19 @@
+{
+  "expo": {
+    "name": "NEBRIN Client Portal",
+    "slug": "nebrin-client-portal",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "scheme": "nebrinclientportal",
+    "userInterfaceStyle": "light",
+    "android": {
+      "package": "com.nebrin.clientportal",
+      "versionCode": 1,
+      "permissions": ["CAMERA"]
+    },
+    "plugins": [
+      ["expo-image-picker", {"photosPermission":"Allow NEBRIN Client Portal to access your photos for service documents.","cameraPermission":"Allow NEBRIN Client Portal to use your camera for service documents."}],
+      "expo-document-picker"
+    ]
+  }
+}
