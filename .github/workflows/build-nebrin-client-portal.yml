@@ -1,0 +1,57 @@
+name: Build NEBRIN Client Portal APK
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - client-portal-v1
+    paths:
+      - 'client-portal-v1/**'
+      - '.github/workflows/build-nebrin-client-portal.yml'
+
+jobs:
+  android-apk:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: client-portal-v1
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+          cache-dependency-path: client-portal-v1/package-lock.json
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Expo prebuild Android
+        run: npx expo prebuild --platform android --non-interactive
+
+      - name: Build release APK
+        run: |
+          cd android
+          chmod +x gradlew
+          ./gradlew assembleRelease
+
+      - name: Collect APK
+        run: |
+          mkdir -p ../dist
+          cp android/app/build/outputs/apk/release/app-release.apk ../dist/NEBRIN-Client-Portal-V1.apk
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: NEBRIN-Client-Portal-V1
+          path: dist/NEBRIN-Client-Portal-V1.apk
+          if-no-files-found: error
