@@ -1,0 +1,58 @@
+name: Build NEBRIN Client Database APK
+
+on:
+  push:
+    branches:
+      - client-database-v2
+    paths:
+      - 'client-database-v2/**'
+      - '.github/workflows/build-nebrin-client-db.yml'
+  workflow_dispatch:
+
+jobs:
+  build-android-apk:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    defaults:
+      run:
+        working-directory: client-database-v2
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: client-database-v2/package.json
+
+      - name: Setup Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+
+      - name: Generate Android project
+        run: npx expo prebuild --platform android --non-interactive --clean
+
+      - name: Build installable APK
+        run: |
+          chmod +x android/gradlew
+          cd android
+          ./gradlew assembleDebug --no-daemon
+
+      - name: Rename APK
+        run: cp android/app/build/outputs/apk/debug/app-debug.apk NEBRIN-Client-Database-V2.apk
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: NEBRIN-Client-Database-V2-APK
+          path: client-database-v2/NEBRIN-Client-Database-V2.apk
+          if-no-files-found: error
+          retention-days: 30
