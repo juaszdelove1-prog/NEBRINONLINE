@@ -25,8 +25,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'npm'
-          cache-dependency-path: client-database-v2/package.json
 
       - name: Setup Java 17
         uses: actions/setup-java@v4
@@ -40,19 +38,25 @@ jobs:
       - name: Generate Android project
         run: npx expo prebuild --platform android --non-interactive --clean
 
-      - name: Build installable APK
+      - name: Build standalone release APK
+        env:
+          NODE_ENV: production
         run: |
           chmod +x android/gradlew
           cd android
-          ./gradlew assembleDebug --no-daemon
+          ./gradlew assembleRelease --no-daemon
 
-      - name: Rename APK
-        run: cp android/app/build/outputs/apk/debug/app-debug.apk NEBRIN-Client-Database-V2.apk
+      - name: Verify bundled JavaScript and collect APK
+        run: |
+          APK=$(find android/app/build/outputs/apk/release -name '*.apk' | head -1)
+          test -n "$APK"
+          unzip -l "$APK" | grep -E 'assets/(index\.android\.bundle|expo-root/)' || (echo 'JavaScript bundle missing from release APK' && exit 1)
+          cp "$APK" NEBRIN-Client-Database-V2-Standalone.apk
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
-          name: NEBRIN-Client-Database-V2-APK
-          path: client-database-v2/NEBRIN-Client-Database-V2.apk
+          name: NEBRIN-Client-Database-V2-Standalone-APK
+          path: client-database-v2/NEBRIN-Client-Database-V2-Standalone.apk
           if-no-files-found: error
           retention-days: 30
