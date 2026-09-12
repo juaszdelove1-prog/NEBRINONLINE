@@ -2,13 +2,13 @@
   "expo": {
     "name": "NEBRIN Client Database",
     "slug": "nebrin-client-database-v2",
-    "version": "2.0.0",
+    "version": "2.1.0",
     "orientation": "portrait",
     "scheme": "nebrinclientdb",
     "userInterfaceStyle": "light",
     "android": {
       "package": "com.nebrin.clientdatabase",
-      "versionCode": 2
+      "versionCode": 3
     },
     "extra": {
       "supabaseUrl": "https://oguukuhflamwmgrbdqfk.supabase.co"
