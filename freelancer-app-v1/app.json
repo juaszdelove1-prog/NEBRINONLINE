@@ -2,14 +2,17 @@
   "expo": {
     "name": "NEBRIN Freelancer",
     "slug": "nebrin-freelancer",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "orientation": "portrait",
     "userInterfaceStyle": "light",
     "android": {
       "package": "com.nebrin.freelancer",
-      "versionCode": 1,
-      "permissions": ["ACCESS_COARSE_LOCATION", "ACCESS_FINE_LOCATION"]
+      "versionCode": 2,
+      "permissions": ["ACCESS_COARSE_LOCATION", "ACCESS_FINE_LOCATION", "CAMERA"]
     },
-    "plugins": [["expo-location", {"locationWhenInUsePermission": "NEBRIN hutumia location wakati wa kumsajili mteja baada ya ruhusa yako ili kuhifadhi eneo la usajili."}]]
+    "plugins": [
+      ["expo-location", {"locationWhenInUsePermission": "NEBRIN hutumia location wakati wa kumsajili mteja baada ya ruhusa yako ili kuhifadhi eneo la usajili."}],
+      ["expo-image-picker", {"cameraPermission": "NEBRIN hutumia kamera kupiga picha za nyaraka za huduma baada ya ruhusa yako."}]
+    ]
   }
 }
